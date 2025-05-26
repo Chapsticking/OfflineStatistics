@@ -21,11 +21,53 @@ function analyzeData() {
 }
 
 function getStandardDeviation(type, arrayOfData, sampleSize) {
-  console.log(arrayOfData)
+  //calculating the average 
+  let sumOfValues = 0;
+  let averageOfValues = 0;
+  let sampleVSAverage = [];
+  let sumOfAveragesSquared = 0;
+  let divisionOfAverages = 0;
+  let standardDeviation = 0;
+
+  for (let i = 0; i < sampleSize; i++) {
+    sumOfValues += arrayOfData[i];
+  }
+  
+  averageOfValues = sumOfValues / sampleSize
+
+  console.log("Sum of values = " + sumOfValues)
+  console.log("Average of values = " + averageOfValues)
   if (type.value === 'Population') {
     console.log("Population Detected");
+    //calculate each samples value minus the average and square its value
+    for (let i = 0; i < sampleSize; i++) {
+      sampleVSAverage.push((arrayOfData[i] - averageOfValues) ** 2 );
+      sumOfAveragesSquared += sampleVSAverage[i];
+      console.log("Sum of Averages Squared = " + sumOfAveragesSquared)
+    }
+  
+  //Divide the sum of the averages squared by the sample size
+  divisionOfAverages = sumOfAveragesSquared / sampleSize
+
+  //Undo the squared value with a square root to obtain the standard deviation
+  standardDeviation = Math.sqrt(divisionOfAverages);
+  console.log("Standard Deviation: " + standardDeviation)
+  return standardDeviation;
   } else {
-    console.log("Sample Detected");
+    console.log("Sample Detected");    //calculate each samples value minus the average and square its value
+    for (let i = 0; i < sampleSize; i++) {
+      sampleVSAverage.push((arrayOfData[i] - averageOfValues) ** 2 );
+      sumOfAveragesSquared += sampleVSAverage[i];
+      console.log("Sum of Averages Squared = " + sumOfAveragesSquared)
+    }
+  
+  //Divide the sum of the averages squared by the sample size
+  divisionOfAverages = sumOfAveragesSquared / (sampleSize - 1)
+
+  //Undo the squared value with a square root to obtain the standard deviation
+  standardDeviation = Math.sqrt(divisionOfAverages);
+  console.log("Standard Deviation of Sample: " + standardDeviation)
+  return standardDeviation;
   }
 }
 
