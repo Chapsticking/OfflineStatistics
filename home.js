@@ -21,6 +21,7 @@ function analyzeData() {
 }
 
 function getStandardDeviation(type, arrayOfData, sampleSize) {
+  console.log(arrayOfData)
   if (type.value === 'Population') {
     console.log("Population Detected");
   } else {
@@ -42,9 +43,11 @@ function cleanData(data) {
     } else {
       console.log("found strange item and excluding: " + item)
     }
-  }); return cleanedDataArray
+  })
+  console.log("Converting Strings to Numbers")
+  let cleanedDataArrayV2 = cleanedDataArray.map(i=>Number(i))
+  return cleanedDataArrayV2
 }
-
 
 function isNumeric(str) {
   if (typeof str != "string") return false // we only process strings!  
