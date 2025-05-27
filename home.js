@@ -1,8 +1,8 @@
 function analyzeData() {
   const rawData = document.getElementById('rawData');
-  const dataType = document.getElementById('dataType')
-  const containsDataHeader = document.getElementById('containsDataHeader')
-  const populationOrSample = document.getElementById('populationOrSample')
+  const dataType = document.getElementById('dataType');
+  const containsDataHeader = document.getElementById('containsDataHeader');
+  const populationOrSample = document.getElementById('populationOrSample');
 
   let arrayOfData = rawData.value.split("\n")
 
@@ -19,25 +19,38 @@ function analyzeData() {
   //obtain standard deviation of data set
   let standardDeviation = getStandardDeviation(populationOrSample, cleanedData, sampleSize);
 
+  //get average of individuals dataset.
+  console.log("Cleaned Data going in: " + cleanedData)
+  let dataAverage = getDataAverage(cleanedData, sampleSize)
+
   //let user know what the data says...
   document.getElementById('stdBehavior').innerHTML = "Standard Deviation for the " + populationOrSample.value + " " + standardDeviation;
   document.getElementById('sampleSizeBehavior').innerHTML = "Sample Size for the " + populationOrSample.value + " " + sampleSize;
-  
+  document.getElementById('averageBehavior').innerHTML = "Average for the " + populationOrSample.value + " " + dataAverage;
+
   //plot this dataset to a chart
   const chart = new Chart("controlChart", {
     type: "line",
     data: {
       labels: getIndexOfArray(cleanedData),
       datasets: [{
+        label: "Your Data",
         pointRadius: 5,
         backgroundColor:"rgba(0,0,255,1)",
         borderColor:"rgb(0,0,255,1)",
         data: cleanedData,
         fill: false
+      }, {
+        label: "Average || Center Line",
+        data: createStaticLines(dataAverage, sampleSize),
+        pointRadius: 3,
+        backgroundColor:"rgba(255, 255, 255, 20)",
+        borderColor:"rgba(255, 255, 255, 20)",
+        fill: false
       }]
     },
     options: {
-      legend: {display: false},
+      legend: {display: true},
       scales: {
         yAxes: [{ticks: {min: 0}}]
       }
@@ -125,3 +138,24 @@ function isNumeric(str) {
          !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
+function createStaticLines(data, sampleSize) {
+  straightLine = [];
+  console.log("data going into straightline: " + data)
+  console.log("Sample size going in: " + sampleSize)
+  for (let i = 0; i < sampleSize; i++) {
+    console.log("straightline push value: " + data)
+    straightLine.push(data)
+  }
+  console.log("straightline PUSHED: " + straightLine);
+  return straightLine
+}
+
+function getDataAverage(data, sampleSize) {
+  let sumOfValues = 0
+  for (let i = 0; i < sampleSize; i++) {
+    sumOfValues += data[i];
+  }
+  
+  averageOfValues = sumOfValues / sampleSize;
+  return averageOfValues
+}

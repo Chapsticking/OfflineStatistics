@@ -8,8 +8,8 @@
   <header>Nates Offline Toolkit</header>
   <body>
     <p>Control Chart Flow</p>
-    <img src="./static/How-to-Select-a-Control-Chart-600x325.jpg"><br>
-    <a>What rules will this program identify for you?</a><br>
+    <img src="./static/How-to-Select-a-Control-Chart-600x325.jpg">
+    <a>What rules will this program identify for you?</a>
     <ul>
       <li>Rule 1 – One point beyond the 3 σ control limit:</li>
       <li>Rule 2 – Eight or more points on one side of the centerline without crossing:</li>
@@ -20,11 +20,11 @@
       <li>Rule 7 – Any noticeable/predictable pattern, cycle, or trend</li>
     </ul>
     
-    <a>How to tell if your data is Discreet or Continous data?</a><br>
+    <a>How to tell if your data is Discreet or Continous data?</a>
     <a>To determine if data is discrete or continuous, consider whether the data values are countable (discrete) or measurable and can take on any value within a range (continuous). Discrete data usually represents counts or categories, while continuous data can vary continuously</a>
 
     <form id="controlChartData" action="" onsubmit="return false">
-      
+      <label for="rawData">Enter your data below</label> 
       <textarea id="rawData" rows="12" placeholder="Paste your data here..."></textarea><br>
     
       <label for="populationOrSample">Is this a population or sample of data?</label>
@@ -41,7 +41,6 @@
 
       <label for="containsDataHeader">Does your data contain headers?</label>
       <select id="containsDataHeader">
-
         <option value = "Auto-Detect">Auto-Detect</option>
         <option value = "Yes">Yes</option>
         <option value = "No">No</option>
@@ -52,7 +51,8 @@
 
   <a>Data Characteristics:</a><br>
   <a id="stdBehavior"></a> 
-  <a id="sampleSizeBehavior"></a> 
+  <a id="sampleSizeBehavior"></a>
+  <a id="averageBehavior"></a>
   <canvas id="controlChart" style="width:100%"></canvas>
   </body>
   <script src="./home.js"></script>

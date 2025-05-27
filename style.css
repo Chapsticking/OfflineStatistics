@@ -64,7 +64,6 @@ textarea::placeholder {
 
 button {
   cursor: pointer;
-  font-size: 50;
   background-color: #03DAC5;
   color: #000;
   font-weight: bold;
