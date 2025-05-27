@@ -16,12 +16,12 @@ function analyzeData() {
   //obtain sample size
   let sampleSize = getSampleOrPopulationSize(cleanedData);
 
-  //obtain standard deviation of data set
-  let standardDeviation = getStandardDeviation(populationOrSample, cleanedData, sampleSize);
-
   //get average of individuals dataset.
-  console.log("Cleaned Data going in: " + cleanedData)
   let dataAverage = getDataAverage(cleanedData, sampleSize)
+
+  //obtain standard deviation of data set
+  let standardDeviation = getStandardDeviation(populationOrSample, cleanedData, sampleSize, dataAverage);
+
 
   //let user know what the data says...
   document.getElementById('stdBehavior').innerHTML = "Standard Deviation for the " + populationOrSample.value + " " + standardDeviation;
@@ -59,24 +59,18 @@ function analyzeData() {
 }
 
 //Gotta find a way to make this more dry, surely some kind of way to just subtract 1 if sample is selected...
-function getStandardDeviation(type, arrayOfData, sampleSize) {
-  let sumOfValues = 0;
+function getStandardDeviation(type, arrayOfData, sampleSize, average) {
   let averageOfValues = 0;
   let sampleVSAverage = [];
   let sumOfAveragesSquared = 0;
   let divisionOfAverages = 0;
   let standardDeviation = 0;
 
-  for (let i = 0; i < sampleSize; i++) {
-    sumOfValues += arrayOfData[i];
-  }
-  
-  averageOfValues = sumOfValues / sampleSize
 
   if (type.value === 'Population') {
     //calculate each samples value minus the average and square its value
     for (let i = 0; i < sampleSize; i++) {
-      sampleVSAverage.push((arrayOfData[i] - averageOfValues) ** 2 );
+      sampleVSAverage.push((arrayOfData[i] - average) ** 2 );
       sumOfAveragesSquared += sampleVSAverage[i];
     }
   
@@ -85,21 +79,18 @@ function getStandardDeviation(type, arrayOfData, sampleSize) {
 
   //Undo the squared value with a square root to obtain the standard deviation
   standardDeviation = Math.sqrt(divisionOfAverages);
-  console.log("Standard Deviation of Population: " + standardDeviation)
   return standardDeviation;
   } else {
-    console.log("Sample Detected");    //calculate each samples value minus the average and square its value
     for (let i = 0; i < sampleSize; i++) {
-      sampleVSAverage.push((arrayOfData[i] - averageOfValues) ** 2 );
+      sampleVSAverage.push((arrayOfData[i] - average) ** 2 );
       sumOfAveragesSquared += sampleVSAverage[i];
     }
   
-  //Divide the sum of the averages squared by the sample size
+  //Divide the sum of the averages squared by the sample size minus 1
   divisionOfAverages = sumOfAveragesSquared / (sampleSize - 1)
 
   //Undo the squared value with a square root to obtain the standard deviation
   standardDeviation = Math.sqrt(divisionOfAverages);
-  console.log("Standard Deviation of Sample: " + standardDeviation)
   return standardDeviation;
   }
 }
@@ -116,10 +107,9 @@ function cleanData(data) {
     if (isNumeric(item)) {
       cleanedDataArray.push(item)
     } else {
-      console.log("found strange item and excluding: " + item)
+      console.log("Found Dirty Data: " + item)
     }
   })
-  console.log("Converting Strings to Numbers")
   let cleanedDataArrayV2 = cleanedDataArray.map(i=>Number(i))
   return cleanedDataArrayV2
 }
@@ -140,13 +130,9 @@ function isNumeric(str) {
 
 function createStaticLines(data, sampleSize) {
   straightLine = [];
-  console.log("data going into straightline: " + data)
-  console.log("Sample size going in: " + sampleSize)
   for (let i = 0; i < sampleSize; i++) {
-    console.log("straightline push value: " + data)
     straightLine.push(data)
   }
-  console.log("straightline PUSHED: " + straightLine);
   return straightLine
 }
 
@@ -154,8 +140,7 @@ function getDataAverage(data, sampleSize) {
   let sumOfValues = 0
   for (let i = 0; i < sampleSize; i++) {
     sumOfValues += data[i];
-  }
-  
+  } 
   averageOfValues = sumOfValues / sampleSize;
   return averageOfValues
 }
