@@ -1,10 +1,15 @@
 
 <!DOCTYPE html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Nates Offline Toolkit</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
   <header>Nates Offline Toolkit</header>
   <body>
     <p>Control Chart Flow</p>
     <img src="./static/How-to-Select-a-Control-Chart-600x325.jpg"><br>
-    <p>What rules will this program identify for you?</p><br>
+    <a>What rules will this program identify for you?</a><br>
     <ul>
       <li>Rule 1 – One point beyond the 3 σ control limit:</li>
       <li>Rule 2 – Eight or more points on one side of the centerline without crossing:</li>
@@ -15,29 +20,18 @@
       <li>Rule 7 – Any noticeable/predictable pattern, cycle, or trend</li>
     </ul>
     
-    <p>How to tell if your data is Discreet or Continous data?</p><br>
-    <p>To determine if data is discrete or continuous, consider whether the data values are countable (discrete) or measurable and can take on any value within a range (continuous). Discrete data usually represents counts or categories, while continuous data can vary continuously</p>
+    <a>How to tell if your data is Discreet or Continous data?</a><br>
+    <a>To determine if data is discrete or continuous, consider whether the data values are countable (discrete) or measurable and can take on any value within a range (continuous). Discrete data usually represents counts or categories, while continuous data can vary continuously</a>
 
-    <form id="controlChartData" action="">
+    <form id="controlChartData" action="" onsubmit="return false">
       
-      <textarea id="rawData" rows="12">
-Example Data
-20
-8
-12
-15
-18
-15
-10
-19
-9
-    </textarea><br>
+      <textarea id="rawData" rows="12" placeholder="Paste your data here..."></textarea><br>
     
       <label for="populationOrSample">Is this a population or sample of data?</label>
       <select id="populationOrSample">
         <option value = "Population">Population</option>
         <option value = "Sample">Sample</option>
-      </select><br>
+      </select>
     
       <label for="dataType">Please Select your data's Type:</label>
       <select id="dataType" name="dataType">
@@ -51,14 +45,16 @@ Example Data
         <option value = "Auto-Detect">Auto-Detect</option>
         <option value = "Yes">Yes</option>
         <option value = "No">No</option>
-      </select><br>
+      </select>
     
       <button onclick="analyzeData()">Submit Data</button>
     </form>
 
-  <a>Data Behaviors:</a><br>
-  <a>Standard Deviation for {POPULATION OR SAMPLE}: </a><br>
-  <a>{POPULATION OR SAMPLE} N size: </a>
+  <a>Data Characteristics:</a><br>
+  <a id="stdBehavior"></a> 
+  <a id="sampleSizeBehavior"></a> 
+  <canvas id="controlChart" style="width:100%"></canvas>
   </body>
   <script src="./home.js"></script>
+  <script src="./chart.js"></script>
 </html>

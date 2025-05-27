@@ -18,10 +18,35 @@ function analyzeData() {
 
   //obtain standard deviation of data set
   let standardDeviation = getStandardDeviation(populationOrSample, cleanedData, sampleSize);
+
+  //let user know what the data says...
+  document.getElementById('stdBehavior').innerHTML = "Standard Deviation for the " + populationOrSample.value + " " + standardDeviation;
+  document.getElementById('sampleSizeBehavior').innerHTML = "Sample Size for the " + populationOrSample.value + " " + sampleSize;
+  
+  //plot this dataset to a chart
+  const chart = new Chart("controlChart", {
+    type: "line",
+    data: {
+      labels: getIndexOfArray(cleanedData),
+      datasets: [{
+        pointRadius: 5,
+        backgroundColor:"rgba(0,0,255,1)",
+        borderColor:"rgb(0,0,255,1)",
+        data: cleanedData,
+        fill: false
+      }]
+    },
+    options: {
+      legend: {display: false},
+      scales: {
+        yAxes: [{ticks: {min: 0}}]
+      }
+    },
+  });
 }
 
+//Gotta find a way to make this more dry, surely some kind of way to just subtract 1 if sample is selected...
 function getStandardDeviation(type, arrayOfData, sampleSize) {
-  //calculating the average 
   let sumOfValues = 0;
   let averageOfValues = 0;
   let sampleVSAverage = [];
@@ -35,15 +60,11 @@ function getStandardDeviation(type, arrayOfData, sampleSize) {
   
   averageOfValues = sumOfValues / sampleSize
 
-  console.log("Sum of values = " + sumOfValues)
-  console.log("Average of values = " + averageOfValues)
   if (type.value === 'Population') {
-    console.log("Population Detected");
     //calculate each samples value minus the average and square its value
     for (let i = 0; i < sampleSize; i++) {
       sampleVSAverage.push((arrayOfData[i] - averageOfValues) ** 2 );
       sumOfAveragesSquared += sampleVSAverage[i];
-      console.log("Sum of Averages Squared = " + sumOfAveragesSquared)
     }
   
   //Divide the sum of the averages squared by the sample size
@@ -51,14 +72,13 @@ function getStandardDeviation(type, arrayOfData, sampleSize) {
 
   //Undo the squared value with a square root to obtain the standard deviation
   standardDeviation = Math.sqrt(divisionOfAverages);
-  console.log("Standard Deviation: " + standardDeviation)
+  console.log("Standard Deviation of Population: " + standardDeviation)
   return standardDeviation;
   } else {
     console.log("Sample Detected");    //calculate each samples value minus the average and square its value
     for (let i = 0; i < sampleSize; i++) {
       sampleVSAverage.push((arrayOfData[i] - averageOfValues) ** 2 );
       sumOfAveragesSquared += sampleVSAverage[i];
-      console.log("Sum of Averages Squared = " + sumOfAveragesSquared)
     }
   
   //Divide the sum of the averages squared by the sample size
@@ -91,8 +111,17 @@ function cleanData(data) {
   return cleanedDataArrayV2
 }
 
+function getIndexOfArray(cleanedData) {
+  indexOfDataSet = []; 
+  cleanedData.forEach(function (item, index) {
+    indexOfDataSet.push(index + 1)
+  }); return indexOfDataSet
+}
+
+//Yoinked this from stack overflow
 function isNumeric(str) {
   if (typeof str != "string") return false // we only process strings!  
   return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
          !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
+
