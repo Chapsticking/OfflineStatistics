@@ -6,7 +6,7 @@ function analyzeData() {
   const populationOrSample = document.getElementById('populationOrSample');
   const defectsSelected = document.getElementById('discreetSelection');
   const sampleSizeConstant = document.getElementById('sampleSizeConstantSelection');
-  const dataTypeSelected = document.getElementById('dataType');
+  const sampleSizeConstant = document.getElementById('dataType');
 
   let arrayOfData = rawData.value.split("\n")
 
@@ -29,7 +29,7 @@ function analyzeData() {
 
 
   //let user know what the data says...
-  document.getElementById('dataTypeSelectedBehavior').innerHTML = "Data Type Selected: " + dataTypeSelected.value;
+  document.getElementById('dataTypeSelectedBehavior').innerHTML = "Data Type Selected: " + populationOrSample.value + " " + standardDeviation;
   document.getElementById('stdBehavior').innerHTML = "Standard Deviation for the " + populationOrSample.value + " " + standardDeviation;
   document.getElementById('sampleSizeBehavior').innerHTML = "Sample Size for the " + populationOrSample.value + " " + sampleSize;
   document.getElementById('averageBehavior').innerHTML = "Average for the " + populationOrSample.value + " " + dataAverage;
