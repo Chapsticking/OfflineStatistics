@@ -67,6 +67,7 @@ button {
   background-color: #03DAC5;
   color: #000;
   font-weight: bold;
+  font-size: 20px;
   border: none;
   transition: background-color 0.3s ease;
 }

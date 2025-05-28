@@ -25,7 +25,7 @@
 
     <form id="controlChartData" action="" onsubmit="return false">
       <label for="rawData">Enter your data below</label> 
-      <textarea id="rawData" rows="12" placeholder="Paste your data here..."></textarea><br>
+      <textarea id="rawData" rows="6" placeholder="Paste your data here..." required></textarea>
     
       <label for="populationOrSample">Is this a population or sample of data?</label>
       <select id="populationOrSample">
@@ -34,20 +34,38 @@
       </select>
     
       <label for="dataType">Please Select your data's Type:</label>
-      <select id="dataType" name="dataType">
+      <select id="dataType" name="dataType" onchange="showOptionsOnDiscreetSelection(this)">
         <option value="Continuous">Continuous</option>
         <option value="Discreet">Discreet</option>
-      </select><br>
+      </select>
 
-      <label for="containsDataHeader">Does your data contain headers?</label>
+      <label id="discreetSelectionID" for="discreetSelection" style="display: none;">Defects for Discreet</label>
+      <select id="discreetSelection" name="discreetSelection" style="display: none;">
+        <option value="MultipleDefectsPerUnit">Multiple Defects Per Unit</option>
+        <option value="OneDefectPerUnit">One Defect Per Unit (AKA Defective)</option>
+      </select>
+
+      <label id="sampleSizeConstantID" for="sampleSizeConstantSelection" style="display: none;">Is Sample Size Constant?</label>
+      <select id="sampleSizeConstantSelection" name="sampleSizeConstantSelection" style="display: none;">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label for="containsDataHeader">Want me to clean up your data?</label>
       <select id="containsDataHeader">
-        <option value = "Auto-Detect">Auto-Detect</option>
+        <option value = "Auto-Detect">Yes</option>
+        <option value = "Auto-Detect">Maybe</option>
+        <option value = "Auto-Detect">Hell YES</option>
+        <option value = "No">NOPE I KNOW WHAT I'M DOING</option>
       </select>
     
       <button onclick="analyzeData()">Submit Data</button>
     </form>
 
   <a>Data Characteristics:</a>
+  <a id="dataTypeSelectedBehavior"></a>
+  <a id="defectsForDiscreetBehavior" style="display: none;"></a>
+  <a id="sampleSizeConstantBehavior" style="display: none;"></a>
   <a id="stdBehavior"></a> 
   <a id="sampleSizeBehavior"></a>
   <a id="averageBehavior"></a>

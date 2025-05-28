@@ -1,8 +1,11 @@
+//-----MAIN FUNCTION------
 function analyzeData() {
   const rawData = document.getElementById('rawData');
   const dataType = document.getElementById('dataType');
   const containsDataHeader = document.getElementById('containsDataHeader');
   const populationOrSample = document.getElementById('populationOrSample');
+  const defectsSelected = document.getElementById('discreetSelection');
+  const sampleSizeConstant = document.getElementById('sampleSizeConstantSelection');
 
   let arrayOfData = rawData.value.split("\n")
 
@@ -10,6 +13,7 @@ function analyzeData() {
     cleanedData = cleanData(arrayOfData)
   }else {
     //lol still gunna clean that data mr silly pants probably gunna remove that function...
+    alert("lol i'm still gunna clean it yah dork - easter egg 1 of 10 identified...")
     cleanedData = cleanData(arrayOfData)
   }
   
@@ -27,6 +31,8 @@ function analyzeData() {
   document.getElementById('stdBehavior').innerHTML = "Standard Deviation for the " + populationOrSample.value + " " + standardDeviation;
   document.getElementById('sampleSizeBehavior').innerHTML = "Sample Size for the " + populationOrSample.value + " " + sampleSize;
   document.getElementById('averageBehavior').innerHTML = "Average for the " + populationOrSample.value + " " + dataAverage;
+  document.getElementById('defectsForDiscreetBehavior').innerHTML = "Defect Type Selected: " + defectsSelected.value;
+  document.getElementById('sampleSizeConstantBehavior').innerHTML = "Sample Size was selected as constant: " + sampleSizeConstant.value;
 
   //plot this dataset to a chart
   const chart = new Chart("controlChart", {
@@ -58,6 +64,7 @@ function analyzeData() {
   });
 }
 
+//-----STATISTIC GATHERING------
 //Gotta find a way to make this more dry, surely some kind of way to just subtract 1 if sample is selected...
 function getStandardDeviation(type, arrayOfData, sampleSize, average) {
   let averageOfValues = 0;
@@ -100,6 +107,24 @@ function getSampleOrPopulationSize(cleanedDataOnly) {
   return sampleSize
 }
 
+function getDataAverage(data, sampleSize) {
+  let sumOfValues = 0
+  for (let i = 0; i < sampleSize; i++) {
+    sumOfValues += data[i];
+  } 
+  averageOfValues = sumOfValues / sampleSize;
+  return averageOfValues
+}
+
+//-----CLEAN DATA-----
+function createStaticLines(data, sampleSize) {
+  straightLine = [];
+  for (let i = 0; i < sampleSize; i++) {
+    straightLine.push(data)
+  }
+  return straightLine
+}
+
 function cleanData(data) {
   const cleanedDataArray = [];
 
@@ -128,19 +153,23 @@ function isNumeric(str) {
          !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
-function createStaticLines(data, sampleSize) {
-  straightLine = [];
-  for (let i = 0; i < sampleSize; i++) {
-    straightLine.push(data)
-  }
-  return straightLine
-}
 
-function getDataAverage(data, sampleSize) {
-  let sumOfValues = 0
-  for (let i = 0; i < sampleSize; i++) {
-    sumOfValues += data[i];
-  } 
-  averageOfValues = sumOfValues / sampleSize;
-  return averageOfValues
+//-----WEBPAGE SHENANIGINS-----
+//This function hides and unhides the options for discreet data
+function showOptionsOnDiscreetSelection(discreetSelected) {
+  if (discreetSelected.value === "Discreet") {
+    document.getElementById("discreetSelection").style.display = "block";
+    document.getElementById("discreetSelectionID").style.display = "block";
+    document.getElementById("sampleSizeConstantID").style.display = "block";
+    document.getElementById("sampleSizeConstantSelection").style.display = "block";
+    document.getElementById("defectsForDiscreetBehavior").style.display = "block";
+    document.getElementById("sampleSizeConstantBehavior").style.display = "block";
+  } else {
+    document.getElementById("discreetSelection").style.display = "none";
+    document.getElementById("discreetSelectionID").style.display = "none";
+    document.getElementById("sampleSizeConstantID").style.display = "none";
+    document.getElementById("sampleSizeConstantSelection").style.display = "none";
+    document.getElementById("defectsForDiscreetBehavior").style.display = "none";
+    document.getElementById("sampleSizeConstantBehavior").style.display = "none";
+  }
 }
