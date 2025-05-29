@@ -27,14 +27,17 @@ function analyzeData() {
   //obtain standard deviation of data set
   let standardDeviation = getStandardDeviation(populationOrSample, cleanedData, sampleSize, dataAverage);
 
+  //determine which test to use based on the users parameters.
+  let testToUse = goToTest(sampleSize, dataTypeSelected.value, defectsSelected.value, sampleSizeConstant.value);
 
   //let user know what the data says...
   document.getElementById('dataTypeSelectedBehavior').innerHTML = "Data Type Selected: " + dataTypeSelected.value;
-  document.getElementById('stdBehavior').innerHTML = "Standard Deviation for the " + populationOrSample.value + " " + standardDeviation;
-  document.getElementById('sampleSizeBehavior').innerHTML = "Sample Size for the " + populationOrSample.value + " " + sampleSize;
-  document.getElementById('averageBehavior').innerHTML = "Average for the " + populationOrSample.value + " " + dataAverage;
+  document.getElementById('stdBehavior').innerHTML = "Standard Deviation of the " + populationOrSample.value + ": " + standardDeviation;
+  document.getElementById('sampleSizeBehavior').innerHTML = "Sample Size for the " + populationOrSample.value + ": " + sampleSize;
+  document.getElementById('averageBehavior').innerHTML = "Average for the " + populationOrSample.value + ": " + dataAverage;
   document.getElementById('defectsForDiscreetBehavior').innerHTML = "Defect Type Selected: " + defectsSelected.value;
   document.getElementById('sampleSizeConstantBehavior').innerHTML = "Sample Size was selected as constant: " + sampleSizeConstant.value;
+  document.getElementById('testSelectedBehavior').innerHTML = "Test Utilized: " + testToUse;
 
   //plot this dataset to a chart
   const chart = new Chart("controlChart", {
@@ -173,5 +176,43 @@ function showOptionsOnDiscreetSelection(discreetSelected) {
     document.getElementById("sampleSizeConstantSelection").style.display = "none";
     document.getElementById("defectsForDiscreetBehavior").style.display = "none";
     document.getElementById("sampleSizeConstantBehavior").style.display = "none";
+  }
+}
+
+//-----Determine Which Test To Use-----
+function goToTest(sampleSize, dataType, defectType, constantSampleType) {
+let testType = ""
+  if(dataType === "Continuous") {
+    if (sampleSize === 1) {
+      testType = "X-MR/I-MR Chart";
+      return testType
+        //X-MR/I-MR Test
+    } else if (sampleSize > 2 && sampleSize < 10 ) {
+        testType = "Xbar-R Chart";
+        return testType
+        //Xbar-R Test
+    } else if (sampleSize >= 10) {
+        testType = "Xbar-S Chart";
+        return testType
+        //Xbar-S Test
+    }
+  } else if (dataType === "Discreet") {
+      if (defectType === "Multiple Defects Per Unit") {
+        if (constantSampleType === "Yes") {
+          testType = "C-Chart";
+          return testType
+        } else if (constantSampleType === "No") {
+          testType = "U-Chart";
+          return testType
+        }
+      } else if (defectType === "One Defect Per Unit") {
+          if (constantSampleType === "Yes") {
+            testType = "NP-Chart";
+            return testType 
+          } else if (constantSampleType === "No") {
+              testType = "P-Chart";
+              return testType
+          }
+      }
   }
 }
