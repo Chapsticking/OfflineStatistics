@@ -39,6 +39,15 @@
         <option value="Discreet">Discreet</option>
       </select>
 
+      <div id="subGroup">
+      <label id="sampleSubGroupSize" for="sampleSubGroupSize">Whats the subgroup size of your samples?</label>
+        <select id="sampleSubGroupSize" name="sampleSubGroupSize">
+          <option value="1SubGroup">1</option>
+          <option value="2to9SubGroup">2 - 9</option>
+          <option value="10+SubGroup">10+</option>
+        </select>
+      </div>
+
       <label id="discreetSelectionID" for="discreetSelection" style="display: none;">Defects for Discreet</label>
       <select id="discreetSelection" name="discreetSelection" style="display: none;">
         <option value="Multiple Defects Per Unit">Multiple Defects Per Unit</option>
@@ -51,14 +60,6 @@
         <option value="No">No</option>
       </select>
 
-      <label for="containsDataHeader">Want me to clean up your data?</label>
-      <select id="containsDataHeader">
-        <option value = "Auto-Detect">Yes</option>
-        <option value = "Auto-Detect">Maybe</option>
-        <option value = "Auto-Detect">Hell YES</option>
-        <option value = "No">NOPE I KNOW WHAT I'M DOING</option>
-      </select>
-    
       <button onclick="analyzeData()">Submit Data</button>
     </form>
 
@@ -66,6 +67,7 @@
   <p id="dataTypeSelectedBehavior"></p>
   <p id="defectsForDiscreetBehavior" style="display: none;"></p>
   <p id="sampleSizeConstantBehavior" style="display: none;"></p>
+  <p id="subGroupSizeBehavior" style="display: none;"></p>
   <p id="stdBehavior"></p> 
   <p id="sampleSizeBehavior"></p>
   <p id="averageBehavior"></p>

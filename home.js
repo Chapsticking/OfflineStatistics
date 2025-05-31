@@ -9,17 +9,15 @@ function analyzeData() {
   const dataTypeSelected = document.getElementById('dataType');
 
   let arrayOfData = rawData.value.split("\n")
-
-  if (containsDataHeader.value === 'Auto-Detect') {
-    cleanedData = cleanData(arrayOfData)
-  }else {
-    //lol still gunna clean that data mr silly pants probably gunna remove that function...
-    alert("lol i'm still gunna clean it yah dork - easter egg 1 of 10 identified...")
-    cleanedData = cleanData(arrayOfData)
-  }
   
+  cleanedData = cleanData(arrayOfData)
+
   //obtain sample size
   let sampleSize = getSampleOrPopulationSize(cleanedData);
+
+  //Obtain subGroupSize
+  //This is something i figured out while building this
+  //Basically, the flow chart says N sample size. but in reality its the number of subgroups of data
 
   //get average of individuals dataset.
   let dataAverage = getDataAverage(cleanedData, sampleSize)
@@ -29,6 +27,8 @@ function analyzeData() {
 
   //determine which test to use based on the users parameters.
   let testToUse = goToTest(sampleSize, dataTypeSelected.value, defectsSelected.value, sampleSizeConstant.value);
+  
+  //call that test and plot the returns on the graph (jesus this is gunna suck)
 
   //let user know what the data says...
   document.getElementById('dataTypeSelectedBehavior').innerHTML = "Data Type Selected: " + dataTypeSelected.value;
@@ -169,6 +169,9 @@ function showOptionsOnDiscreetSelection(discreetSelected) {
     document.getElementById("sampleSizeConstantSelection").style.display = "block";
     document.getElementById("defectsForDiscreetBehavior").style.display = "block";
     document.getElementById("sampleSizeConstantBehavior").style.display = "block";
+    
+    //if discreet is selected we need to hide the subgroup menu
+    document.getElementById("subGroup").style.display = "none";
   } else {
     document.getElementById("discreetSelection").style.display = "none";
     document.getElementById("discreetSelectionID").style.display = "none";
@@ -176,10 +179,11 @@ function showOptionsOnDiscreetSelection(discreetSelected) {
     document.getElementById("sampleSizeConstantSelection").style.display = "none";
     document.getElementById("defectsForDiscreetBehavior").style.display = "none";
     document.getElementById("sampleSizeConstantBehavior").style.display = "none";
+    document.getElementById("subGroup").style.display = "block";
   }
 }
 
-//-----Determine Which Test To Use-----
+//-----Determine Which Test To Use (god damn this looks like shit)-----
 function goToTest(sampleSize, dataType, defectType, constantSampleType) {
 let testType = ""
   if(dataType === "Continuous") {
