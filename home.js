@@ -8,6 +8,7 @@ function analyzeData() {
   const sampleSizeConstant = document.getElementById('sampleSizeConstantSelection');
   const dataTypeSelected = document.getElementById('dataType');
   const subGroupSelected = document.getElementById('sampleSubGroupSizeSelection');
+  const exportSelected = document.getElementById('exportData')
 
   let arrayOfData = rawData.value.split("\n")
   
@@ -30,6 +31,12 @@ function analyzeData() {
   //determine which test to use based on the users parameters.
   let testResults = goToTest(subGroupSize, dataTypeSelected.value, defectsSelected.value, sampleSizeConstant.value, cleanedData);
 
+  //Export results to CSV if user specified.
+  if (exportSelected.value === "Yes") {
+    const csv = convertChartDataToCSV(testResults);
+    downloadCSV(csv, testResults.currentTest + ".csv");
+}
+
   //Data Characteristics
   document.getElementById('dataTypeSelectedBehavior').innerHTML = "Data Type Selected: " + dataTypeSelected.value;
   document.getElementById('stdBehavior').innerHTML = "Standard Deviation of the " + populationOrSample.value + ": " + standardDeviation;
@@ -44,37 +51,99 @@ function analyzeData() {
   const chart = new Chart("controlChart", {
     type: "line",
     data: {
-      labels: getIndexOfArray(cleanedData),
+      labels: testResults.results.indexForChart,
       datasets: [{
-        label: "Your Data",
+        label: "Data",
         pointRadius: 5,
         backgroundColor:"rgba(0,0,255,1)",
         borderColor:"rgb(0,0,255,1)",
-        data: testResults.dataForChart,
+        data: testResults.results.dataForChart,
         fill: false
       }, {
-        label: "Average",
-        data: testResults.iBar,
-        pointRadius: 3,
-        backgroundColor:"rgba(255, 255, 255, 20)",
-        borderColor:"rgba(255, 255, 255, 20)",
-        fill: false
-      }, {
-        label: "1st Sigma",
-        data: testResults.iBarPos1Sigma,
+        label: "iBar",
+        data: testResults.results.iBar,
         pointRadius: 1,
-        borderColor:"rgba(255,144,20, 20)",
+        borderColor:"rgba(255, 255, 255, 1)",
+        borderDash: [15],
+        fill: false
+      }, {
+        label: "1st + Sigma",
+        data: testResults.results.iBarPos1Sigma,
+        pointRadius: 1,
+        borderColor:"rgba(217,210,213,.5)",
+        borderDash: [10],
         fill: false,
+      }, {
+        label: "2nd + Sigma",
+        data: testResults.results.iBarPos2Sigma,
+        pointRadius: 1,
+        borderColor: "rgba(217,210,213,.8)",
+        borderDash: [10],
+      }, {
+        label: "3rd + Sigma",
+        data: testResults.results.iBarPos3Sigma,
+        pointRadius: 1,
+        borderColor: "rgba(255,0,0,1)",
+      },{
+        label: "1st - Sigma",
+        data: testResults.results.iBarNeg1Sigma,
+        pointRadius: 1,
+        borderColor: "rgba(217,210,213,.5)",
+        borderDash: [10],
+      },{
+        label: "2nd - Sigma",
+        data: testResults.results.iBarNeg2Sigma,
+        pointRadius: 1,
+        borderColor: "rgba(217,210,213,.8)",
+        borderDash: [10],
+      },{
+        label: "3rd - Sigma",
+        data: testResults.results.iBarNeg3Sigma,
+        pointRadius: 1,
+        borderColor: "rgba(255,0,0,1)",
       }]
     },
     options: {
       legend: {display: true},
-      scales: {
-        yAxes: [{ticks: {min: 0}}]
-      }
     },
   });
-}
+
+  //plot this dataset to a chart
+  const newchart = new Chart("IMRChart", {
+    type: "line",
+    data: {
+      labels: testResults.results.indexForChart,
+      datasets: [{
+        label: "Moving Range",
+        pointRadius: 5,
+        backgroundColor:"rgba(0,0,255,1)",
+        borderColor:"rgb(0,0,255,1)",
+        data: testResults.results.movingRange,
+        fill: false,
+      }, {
+        label: "Moving Range Bar",
+        data: testResults.results.movingRangeBar,
+        pointRadius: 1,
+        borderColor:"rgba(255, 255, 255, 1)",
+        borderDash: [15],
+        fill: false,
+      }, {
+        label: "Moving Range UCL",
+        data: testResults.results.movingRangeUCL,
+        pointRadius: 1,
+        borderColor:"rgba(255,0,0,1)",
+        fill: false,
+      }],
+    },
+    options: {
+      legend: {display: true},
+    }
+  });
+
+return testResults
+
+} //END FUNCTION
+
 
 //-----STATISTIC GATHERING------
 //Gotta find a way to make this more dry, surely some kind of way to just subtract 1 if sample is selected...
@@ -244,19 +313,21 @@ function xmr_imr_plot(data) {
 
   let xMRiMRChartData = {
     currentTest: "XMR / IMR Chart Data",
-    indexForChart: getIndexOfArray(data),
-    dataForChart: data,
-    iBar: iBarData,
-    movingRange: movingRange, 
-    movingRangeBar: movingRangeBar,
-    movingRangeUCL: movingRangeUCL, 
-    iSigma: iSigma,
-    iBarPos1Sigma: iBarSigmas("Add", 1, iBarData, iBarData),
-    iBarPos2Sigma: iBarSigmas("Add", 2, iBarData, iBarData),
-    iBarPos3Sigma: iBarSigmas("Add", 3, iBarData, iBarData),
-    iBarNeg1Sigma: iBarSigmas("Subtract", 1, iBarData, iBarData),
-    iBarNeg2Sigma: iBarSigmas("Subtract", 2, iBarData, iBarData),
-    iBarNeg3Sigma: iBarSigmas("Subtract", 3, iBarData, iBarData),
+      results: {
+        indexForChart: getIndexOfArray(data),
+        dataForChart: data,
+        iBar: iBarData,
+        movingRange: movingRange, 
+        movingRangeBar: movingRangeBar,
+        movingRangeUCL: movingRangeUCL, 
+        iSigma: iSigma,
+        iBarPos1Sigma: iBarSigmas("Add", 1, iBarData, iSigma),
+        iBarPos2Sigma: iBarSigmas("Add", 2, iBarData, iSigma),
+        iBarPos3Sigma: iBarSigmas("Add", 3, iBarData, iSigma),
+        iBarNeg1Sigma: iBarSigmas("Subtract", 1, iBarData, iSigma),
+        iBarNeg2Sigma: iBarSigmas("Subtract", 2, iBarData, iSigma),
+        iBarNeg3Sigma: iBarSigmas("Subtract", 3, iBarData, iSigma),
+      }
   }
 
   function movingRangeConsolidation(data) {
@@ -290,15 +361,15 @@ function xmr_imr_plot(data) {
     }; return iSigma
   };
 
-  function iBarSigmas(addOrSubtract, multipliedSigma, dataForChart, iSigma) {
+  function iBarSigmas(addOrSubtract, multipliedSigma, movingRangeBar, iSigma) {
     iBarSigma = []
     if (addOrSubtract === "Add") {
-      for (i = 0; i < dataForChart.length; i++) {
-        iBarSigma.push(dataForChart[i] + iSigma[i] * multipliedSigma)
+      for (i = 0; i < movingRangeBar.length; i++) {
+        iBarSigma.push(movingRangeBar[i] + (multipliedSigma * iSigma[i]))
       }
     } else {
-      for (i = 0; i < dataForChart.length; i++) {
-        let negSigmaValue = dataForChart[i] - iSigma[i] * multipliedSigma
+      for (i = 0; i < movingRangeBar.length; i++) {
+        let negSigmaValue = movingRangeBar[i] - (multipliedSigma * iSigma[i])
         if (negSigmaValue < 0) {
           iBarSigma.push(0)
         } else {
@@ -317,3 +388,39 @@ function xmr_imr_plot(data) {
 
 return xMRiMRChartData
 };
+
+//-----Convert Object to CSV-----
+function convertChartDataToCSV(dataObj) {
+  const results = dataObj.results;
+
+  // Get all keys to form CSV headers
+  const headers = Object.keys(results);
+
+  // Find the length of any one array (they should all be the same)
+  const length = results[headers[0]].length;
+
+  // Start with the header row
+  let csv = headers.join(",") + "\n";
+
+  // Construct each data row
+  for (let i = 0; i < length; i++) {
+    const row = headers.map(key => results[key][i]);
+    csv += row.join(",") + "\n";
+  }
+
+  return csv;
+}
+
+
+function downloadCSV(csvString, filename = "chart_data.csv") {
+  const blob = new Blob([csvString], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  
+  URL.revokeObjectURL(url);
+}
+

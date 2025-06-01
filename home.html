@@ -24,6 +24,13 @@
     <p>To determine if data is discrete or continuous, consider whether the data values are countable (discrete) or measurable and can take on any value within a range (continuous). Discrete data usually represents counts or categories, while continuous data can vary continuously</p>
 
     <form id="controlChartData" action="" onsubmit="return false">
+      
+      <label for="exportData">Would you like to export the results to a CSV?</label>
+      <select id="exportData">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select
+
       <label for="rawData">Enter your data below</label> 
       <textarea id="rawData" rows="6" placeholder="Paste your data here..." required></textarea>
     
@@ -74,6 +81,8 @@
   <p id="testSelectedBehavior"></p>
 
   <canvas id="controlChart" style="width:100%"></canvas>
+  <canvas id="IMRChart" style="width:100%"></canvas>
+  <button onclick="downloadCSV(testResults, testResults.currentTest + '.csv')">Export data</button>
   </body>
   <script src="./home.js"></script>
   <script src="./chart.js"></script>
