@@ -227,22 +227,79 @@ let testType = ""
 }
 
 //-----Plotting Graphs and Stats-----
+//XMR and IMR Chart Data
 function xmr_imr_plot(data) {
-  //XMR Chart
+
+  let iBarData = createStaticLines(getDataAverage(data, data.length), data.length)
+  let movingRange = movingRangeConsolidation(data);
+  let movingRangeBar = movingRangeBarConsolidation(movingRange);
+  let iSigma = iSigmaConsolidation(movingRangeBar)
+
   let xMRiMRChartData = {
     indexForChart: getIndexOfArray(data),
     dataForChart: data,
-    iBar: createStaticLines(getDataAverage(data, data.length), data.length),
-    mR: [],
-    mRBar: [],
-    mRUCL: [],
-    iSigma: [],
-    iBarPos1Sigma: [],
-    iBarPos2Sigma: [],
-    iBarPos3Sigma: [],
-    iBarNeg1Sigma: [],
-    iBarNeg2Sigma: [],
-    iBarNeg3Sigma: [],
+    iBar: iBarData,
+    movingRange: movingRange, 
+    movingRangeBar: movingRangeBar,
+    movingRangeUCL: [],
+    iSigma: iSigma,
+    iBarPos1Sigma: iBarSigmas("Add", 1, iBarData, iBarData),
+    iBarPos2Sigma: iBarSigmas("Add", 2, iBarData, iBarData),
+    iBarPos3Sigma: iBarSigmas("Add", 3, iBarData, iBarData),
+    iBarNeg1Sigma: iBarSigmas("subtract", 1, iBarData, iBarData),
+    iBarNeg2Sigma: iBarSigmas("subtract", 2, iBarData, iBarData),
+    iBarNeg3Sigma: iBarSigmas("subtract", 3, iBarData, iBarData),
   }
-  console.log(xMRChartData)
-}
+
+  function movingRangeConsolidation(data) {
+  let mR = [];
+  let min = 0;
+  let max = 0;
+  let delta = 0;
+
+  for (let i = 0; i < data.length; i++) {
+    if (i === 0) {
+      mR.push(0)
+    } else {
+    min = Math.min(data[i], data[i - 1])
+    max = Math.max(data[i], data[i - 1])
+    delta = max - min
+    mR.push(delta)
+    }
+  }; return mR 
+  };
+  
+  function movingRangeBarConsolidation(movingRangeData) {
+    let mRB = createStaticLines(getDataAverage(movingRangeData, movingRangeData.length), movingRangeData.length);
+    return mRB
+  };
+
+  //Approximated Standard deviation using 1.128
+  function iSigmaConsolidation(movingRangeBarData) {
+    let iSigma = [];
+    for (let i = 0; i < movingRangeBarData.length; i++) {
+      iSigma.push(movingRangeBarData[i] / 1.128)
+    }; return iSigma
+  };
+
+  function iBarSigmas(addOrSubtract, multipliedSigma, dataForChart, iSigma) {
+    iBarSigma = []
+    if (addOrSubtract === "Add") {
+      for (i = 0; i < dataForChart.length; i++) {
+        iBarSigma.push(dataForChart[i] + iSigma[i] * multipliedSigma)
+      }
+    } else {
+      for (i = 0; i < dataForChart.length; i++) {
+        let negSigmaValue = dataForChart[i] - iSigma[i] * multipliedSigma
+        if (negSigmaValue < 0) {
+          iBarSigma.push(0)
+        } else {
+          iBarSigma.push(negSigmaValue);
+        }
+      }
+    }; return iBarSigma
+  } 
+
+  console.log(xMRiMRChartData)
+
+};
