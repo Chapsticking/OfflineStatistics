@@ -27,34 +27,34 @@
       <label for="rawData">Enter your data below</label> 
       <textarea id="rawData" rows="6" placeholder="Paste your data here..." required></textarea>
     
-      <label for="populationOrSample">Is this a population or sample of data?</label>
+      <label for="populationOrSample">Population or Sample of Data?</label>
       <select id="populationOrSample">
-        <option value = "Sample">Sample</option>
-        <option value = "Population">Population</option>
+        <option value="Sample">Sample</option>
+        <option value="Population">Population</option>
       </select>
     
-      <label for="dataType">Please Select your data's Type:</label>
+      <label for="dataType">Please Select the Data Type:</label>
       <select id="dataType" name="dataType" onchange="showOptionsOnDiscreetSelection(this)">
         <option value="Continuous">Continuous</option>
         <option value="Discreet">Discreet</option>
       </select>
 
       <div id="subGroup">
-      <label id="sampleSubGroupSize" for="sampleSubGroupSize">Whats the subgroup size of your samples?</label>
-        <select id="sampleSubGroupSize" name="sampleSubGroupSize">
-          <option value="1SubGroup">1</option>
-          <option value="2to9SubGroup">2 - 9</option>
-          <option value="10+SubGroup">10+</option>
-        </select>
+        <label id="sampleSubGroupSize" for="sampleSubGroupSizeSelection">Sub-Group Size of Your Samples?</label>
+          <select id="sampleSubGroupSizeSelection" name="sampleSubGroupSizeSelection">
+            <option value="1">1</option>
+            <option value="2 to 9">2 to 9</option>
+            <option value="10 or More">10 or More</option>
+          </select>
       </div>
 
-      <label id="discreetSelectionID" for="discreetSelection" style="display: none;">Defects for Discreet</label>
+      <label id="discreetSelectionID" for="discreetSelection" style="display: none;">Defects for Discreet:</label>
       <select id="discreetSelection" name="discreetSelection" style="display: none;">
         <option value="Multiple Defects Per Unit">Multiple Defects Per Unit</option>
         <option value="One Defect Per Unit">One Defect Per Unit (AKA Defective)</option>
       </select>
 
-      <label id="sampleSizeConstantID" for="sampleSizeConstantSelection" style="display: none;">Is Sample Size Constant?</label>
+      <label id="sampleSizeConstantID" for="sampleSizeConstantSelection" style="display: none;">Constant Sample Size?</label>
       <select id="sampleSizeConstantSelection" name="sampleSizeConstantSelection" style="display: none;">
         <option value="Yes">Yes</option>
         <option value="No">No</option>
@@ -67,7 +67,7 @@
   <p id="dataTypeSelectedBehavior"></p>
   <p id="defectsForDiscreetBehavior" style="display: none;"></p>
   <p id="sampleSizeConstantBehavior" style="display: none;"></p>
-  <p id="subGroupSizeBehavior" style="display: none;"></p>
+  <p id="subGroupSizeBehavior"></p>
   <p id="stdBehavior"></p> 
   <p id="sampleSizeBehavior"></p>
   <p id="averageBehavior"></p>

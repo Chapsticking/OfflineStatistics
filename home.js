@@ -7,6 +7,7 @@ function analyzeData() {
   const defectsSelected = document.getElementById('discreetSelection');
   const sampleSizeConstant = document.getElementById('sampleSizeConstantSelection');
   const dataTypeSelected = document.getElementById('dataType');
+  const subGroupSelected = document.getElementById('sampleSubGroupSizeSelection');
 
   let arrayOfData = rawData.value.split("\n")
   
@@ -18,6 +19,7 @@ function analyzeData() {
   //Obtain subGroupSize
   //This is something i figured out while building this
   //Basically, the flow chart says N sample size. but in reality its the number of subgroups of data
+  let subGroupSize = subGroupSelected.value;
 
   //get average of individuals dataset.
   let dataAverage = getDataAverage(cleanedData, sampleSize)
@@ -26,18 +28,17 @@ function analyzeData() {
   let standardDeviation = getStandardDeviation(populationOrSample, cleanedData, sampleSize, dataAverage);
 
   //determine which test to use based on the users parameters.
-  let testToUse = goToTest(sampleSize, dataTypeSelected.value, defectsSelected.value, sampleSizeConstant.value);
-  
-  //call that test and plot the returns on the graph (jesus this is gunna suck)
+  let testExecute = goToTest(subGroupSize, dataTypeSelected.value, defectsSelected.value, sampleSizeConstant.value, cleanedData);
 
-  //let user know what the data says...
+  //Data Characteristics
   document.getElementById('dataTypeSelectedBehavior').innerHTML = "Data Type Selected: " + dataTypeSelected.value;
   document.getElementById('stdBehavior').innerHTML = "Standard Deviation of the " + populationOrSample.value + ": " + standardDeviation;
   document.getElementById('sampleSizeBehavior').innerHTML = "Sample Size for the " + populationOrSample.value + ": " + sampleSize;
   document.getElementById('averageBehavior').innerHTML = "Average for the " + populationOrSample.value + ": " + dataAverage;
+  document.getElementById('subGroupSizeBehavior').innerHTML = "Sub Group Size: " + subGroupSize;
   document.getElementById('defectsForDiscreetBehavior').innerHTML = "Defect Type Selected: " + defectsSelected.value;
   document.getElementById('sampleSizeConstantBehavior').innerHTML = "Sample Size was selected as constant: " + sampleSizeConstant.value;
-  document.getElementById('testSelectedBehavior').innerHTML = "Test Utilized: " + testToUse;
+  document.getElementById('testSelectedBehavior').innerHTML = "Test Utilized: " + testExecute;
 
   //plot this dataset to a chart
   const chart = new Chart("controlChart", {
@@ -137,7 +138,7 @@ function cleanData(data) {
     if (isNumeric(item)) {
       cleanedDataArray.push(item)
     } else {
-      console.log("Found Dirty Data: " + item)
+      console.log("Expunged Data because it was dirty... : " + item)
     }
   })
   let cleanedDataArrayV2 = cleanedDataArray.map(i=>Number(i))
@@ -172,6 +173,7 @@ function showOptionsOnDiscreetSelection(discreetSelected) {
     
     //if discreet is selected we need to hide the subgroup menu
     document.getElementById("subGroup").style.display = "none";
+    document.getElementById("subGroupSizeBehavior").style.display = "none";
   } else {
     document.getElementById("discreetSelection").style.display = "none";
     document.getElementById("discreetSelectionID").style.display = "none";
@@ -179,23 +181,26 @@ function showOptionsOnDiscreetSelection(discreetSelected) {
     document.getElementById("sampleSizeConstantSelection").style.display = "none";
     document.getElementById("defectsForDiscreetBehavior").style.display = "none";
     document.getElementById("sampleSizeConstantBehavior").style.display = "none";
+
+    //If discreet handle
     document.getElementById("subGroup").style.display = "block";
+    document.getElementById("subGroupSizeBehavior").style.display = "block";
   }
 }
 
 //-----Determine Which Test To Use (god damn this looks like shit)-----
-function goToTest(sampleSize, dataType, defectType, constantSampleType) {
+function goToTest(subGroupSize, dataType, defectType, constantSampleType, cleanedData) {
 let testType = ""
   if(dataType === "Continuous") {
-    if (sampleSize === 1) {
+    if (subGroupSize === "1") {
       testType = "X-MR/I-MR Chart";
-      return testType
+      xmr_imr_plot(cleanedData)
         //X-MR/I-MR Test
-    } else if (sampleSize > 2 && sampleSize < 10 ) {
+    } else if (subGroupSize === "2 to 9") {
         testType = "Xbar-R Chart";
         return testType
         //Xbar-R Test
-    } else if (sampleSize >= 10) {
+    } else if (subGroupSize === "10 or More") {
         testType = "Xbar-S Chart";
         return testType
         //Xbar-S Test
@@ -219,4 +224,25 @@ let testType = ""
           }
       }
   }
+}
+
+//-----Plotting Graphs and Stats-----
+function xmr_imr_plot(data) {
+  //XMR Chart
+  let xMRiMRChartData = {
+    indexForChart: getIndexOfArray(data),
+    dataForChart: data,
+    iBar: createStaticLines(getDataAverage(data, data.length), data.length),
+    mR: [],
+    mRBar: [],
+    mRUCL: [],
+    iSigma: [],
+    iBarPos1Sigma: [],
+    iBarPos2Sigma: [],
+    iBarPos3Sigma: [],
+    iBarNeg1Sigma: [],
+    iBarNeg2Sigma: [],
+    iBarNeg3Sigma: [],
+  }
+  console.log(xMRChartData)
 }
