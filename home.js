@@ -28,7 +28,7 @@ function analyzeData() {
   let standardDeviation = getStandardDeviation(populationOrSample, cleanedData, sampleSize, dataAverage);
 
   //determine which test to use based on the users parameters.
-  let testExecute = goToTest(subGroupSize, dataTypeSelected.value, defectsSelected.value, sampleSizeConstant.value, cleanedData);
+  let testResults = goToTest(subGroupSize, dataTypeSelected.value, defectsSelected.value, sampleSizeConstant.value, cleanedData);
 
   //Data Characteristics
   document.getElementById('dataTypeSelectedBehavior').innerHTML = "Data Type Selected: " + dataTypeSelected.value;
@@ -38,7 +38,7 @@ function analyzeData() {
   document.getElementById('subGroupSizeBehavior').innerHTML = "Sub Group Size: " + subGroupSize;
   document.getElementById('defectsForDiscreetBehavior').innerHTML = "Defect Type Selected: " + defectsSelected.value;
   document.getElementById('sampleSizeConstantBehavior').innerHTML = "Sample Size was selected as constant: " + sampleSizeConstant.value;
-  document.getElementById('testSelectedBehavior').innerHTML = "Test Utilized: " + testExecute;
+  document.getElementById('testSelectedBehavior').innerHTML = "Test Utilized: " + testResults.currentTest;
 
   //plot this dataset to a chart
   const chart = new Chart("controlChart", {
@@ -194,7 +194,7 @@ let testType = ""
   if(dataType === "Continuous") {
     if (subGroupSize === "1") {
       testType = "X-MR/I-MR Chart";
-      xmr_imr_plot(cleanedData)
+      return xmr_imr_plot(cleanedData)
         //X-MR/I-MR Test
     } else if (subGroupSize === "2 to 9") {
         testType = "Xbar-R Chart";
@@ -233,15 +233,17 @@ function xmr_imr_plot(data) {
   let iBarData = createStaticLines(getDataAverage(data, data.length), data.length)
   let movingRange = movingRangeConsolidation(data);
   let movingRangeBar = movingRangeBarConsolidation(movingRange);
-  let iSigma = iSigmaConsolidation(movingRangeBar)
+  let iSigma = iSigmaConsolidation(movingRangeBar);
+  let movingRangeUCL = movingRangeUCLConsolidation(movingRangeBar);
 
   let xMRiMRChartData = {
+    currentTest: "XMR / IMR Chart Data",
     indexForChart: getIndexOfArray(data),
     dataForChart: data,
     iBar: iBarData,
     movingRange: movingRange, 
     movingRangeBar: movingRangeBar,
-    movingRangeUCL: [],
+    movingRangeUCL: movingRangeUCL, 
     iSigma: iSigma,
     iBarPos1Sigma: iBarSigmas("Add", 1, iBarData, iBarData),
     iBarPos2Sigma: iBarSigmas("Add", 2, iBarData, iBarData),
@@ -298,8 +300,14 @@ function xmr_imr_plot(data) {
         }
       }
     }; return iBarSigma
-  } 
+  }
 
-  console.log(xMRiMRChartData)
+  function movingRangeUCLConsolidation(movingRangeBar) {
+    let uCL = []
+    for (i = 0; i < movingRangeBar.length; i++) {
+      uCL.push(movingRangeBar[i] * 3.267);
+    }; return uCL
+  }
 
+return xMRiMRChartData
 };
