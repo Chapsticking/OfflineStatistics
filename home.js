@@ -50,15 +50,21 @@ function analyzeData() {
         pointRadius: 5,
         backgroundColor:"rgba(0,0,255,1)",
         borderColor:"rgb(0,0,255,1)",
-        data: cleanedData,
+        data: testResults.dataForChart,
         fill: false
       }, {
-        label: "Average || Center Line",
-        data: createStaticLines(dataAverage, sampleSize),
+        label: "Average",
+        data: testResults.iBar,
         pointRadius: 3,
         backgroundColor:"rgba(255, 255, 255, 20)",
         borderColor:"rgba(255, 255, 255, 20)",
         fill: false
+      }, {
+        label: "1st Sigma",
+        data: testResults.iBarPos1Sigma,
+        pointRadius: 1,
+        borderColor:"rgba(255,144,20, 20)",
+        fill: false,
       }]
     },
     options: {
@@ -248,9 +254,9 @@ function xmr_imr_plot(data) {
     iBarPos1Sigma: iBarSigmas("Add", 1, iBarData, iBarData),
     iBarPos2Sigma: iBarSigmas("Add", 2, iBarData, iBarData),
     iBarPos3Sigma: iBarSigmas("Add", 3, iBarData, iBarData),
-    iBarNeg1Sigma: iBarSigmas("subtract", 1, iBarData, iBarData),
-    iBarNeg2Sigma: iBarSigmas("subtract", 2, iBarData, iBarData),
-    iBarNeg3Sigma: iBarSigmas("subtract", 3, iBarData, iBarData),
+    iBarNeg1Sigma: iBarSigmas("Subtract", 1, iBarData, iBarData),
+    iBarNeg2Sigma: iBarSigmas("Subtract", 2, iBarData, iBarData),
+    iBarNeg3Sigma: iBarSigmas("Subtract", 3, iBarData, iBarData),
   }
 
   function movingRangeConsolidation(data) {
