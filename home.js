@@ -47,98 +47,7 @@ function analyzeData() {
   document.getElementById('sampleSizeConstantBehavior').innerHTML = "Sample Size was selected as constant: " + sampleSizeConstant.value;
   document.getElementById('testSelectedBehavior').innerHTML = "Test Utilized: " + testResults.currentTest;
 
-  //plot this dataset to a chart
-  const chart = new Chart("controlChart", {
-    type: "line",
-    data: {
-      labels: testResults.results.indexForChart,
-      datasets: [{
-        label: "Data",
-        pointRadius: 5,
-        backgroundColor:"rgba(0,0,255,1)",
-        borderColor:"rgb(0,0,255,1)",
-        data: testResults.results.dataForChart,
-        fill: false
-      }, {
-        label: "iBar",
-        data: testResults.results.iBar,
-        pointRadius: 1,
-        borderColor:"rgba(255, 255, 255, 1)",
-        borderDash: [15],
-        fill: false
-      }, {
-        label: "1st + Sigma",
-        data: testResults.results.iBarPos1Sigma,
-        pointRadius: 1,
-        borderColor:"rgba(217,210,213,.5)",
-        borderDash: [10],
-        fill: false,
-      }, {
-        label: "2nd + Sigma",
-        data: testResults.results.iBarPos2Sigma,
-        pointRadius: 1,
-        borderColor: "rgba(217,210,213,.8)",
-        borderDash: [10],
-      }, {
-        label: "3rd + Sigma",
-        data: testResults.results.iBarPos3Sigma,
-        pointRadius: 1,
-        borderColor: "rgba(255,0,0,1)",
-      },{
-        label: "1st - Sigma",
-        data: testResults.results.iBarNeg1Sigma,
-        pointRadius: 1,
-        borderColor: "rgba(217,210,213,.5)",
-        borderDash: [10],
-      },{
-        label: "2nd - Sigma",
-        data: testResults.results.iBarNeg2Sigma,
-        pointRadius: 1,
-        borderColor: "rgba(217,210,213,.8)",
-        borderDash: [10],
-      },{
-        label: "3rd - Sigma",
-        data: testResults.results.iBarNeg3Sigma,
-        pointRadius: 1,
-        borderColor: "rgba(255,0,0,1)",
-      }]
-    },
-    options: {
-      legend: {display: true},
-    },
-  });
 
-  //plot this dataset to a chart
-  const newchart = new Chart("IMRChart", {
-    type: "line",
-    data: {
-      labels: testResults.results.indexForChart,
-      datasets: [{
-        label: "Moving Range",
-        pointRadius: 5,
-        backgroundColor:"rgba(0,0,255,1)",
-        borderColor:"rgb(0,0,255,1)",
-        data: testResults.results.movingRange,
-        fill: false,
-      }, {
-        label: "Moving Range Bar",
-        data: testResults.results.movingRangeBar,
-        pointRadius: 1,
-        borderColor:"rgba(255, 255, 255, 1)",
-        borderDash: [15],
-        fill: false,
-      }, {
-        label: "Moving Range UCL",
-        data: testResults.results.movingRangeUCL,
-        pointRadius: 1,
-        borderColor:"rgba(255,0,0,1)",
-        fill: false,
-      }],
-    },
-    options: {
-      legend: {display: true},
-    }
-  });
 
 return testResults
 
@@ -385,6 +294,100 @@ function xmr_imr_plot(data) {
       uCL.push(movingRangeBar[i] * 3.267);
     }; return uCL
   }
+
+  //plot this dataset to a chart
+  const xMRChart = new Chart("controlChart", {
+    type: "line",
+    data: {
+      labels: xMRiMRChartData.results.indexForChart,
+      datasets: [{
+        label: "Data",
+        pointRadius: 5,
+        backgroundColor:"rgba(0,0,255,1)",
+        borderColor:"rgb(0,0,255,1)",
+        data: xMRiMRChartData.results.dataForChart,
+        fill: false
+      }, {
+        label: "iBar",
+        data: xMRiMRChartData.results.iBar,
+        pointRadius: 0,
+        borderColor:"rgba(255, 255, 255, 1)",
+        borderDash: [15],
+        fill: false
+      }, {
+        label: "1st + Sigma",
+        data: xMRiMRChartData.results.iBarPos1Sigma,
+        pointRadius: 0,
+        borderColor:"rgba(217,210,213,.5)",
+        borderDash: [10],
+        fill: false,
+      }, {
+        label: "2nd + Sigma",
+        data: xMRiMRChartData.results.iBarPos2Sigma,
+        pointRadius: 0,
+        borderColor: "rgba(217,210,213,.8)",
+        borderDash: [10],
+      }, {
+        label: "3rd + Sigma",
+        data: xMRiMRChartData.results.iBarPos3Sigma,
+        pointRadius: 0,
+        borderColor: "rgba(255,0,0,1)",
+      },{
+        label: "1st - Sigma",
+        data: xMRiMRChartData.results.iBarNeg1Sigma,
+        pointRadius: 0,
+        borderColor: "rgba(217,210,213,.5)",
+        borderDash: [10],
+      },{
+        label: "2nd - Sigma",
+        data: xMRiMRChartData.results.iBarNeg2Sigma,
+        pointRadius: 0,
+        borderColor: "rgba(217,210,213,.8)",
+        borderDash: [10],
+      },{
+        label: "3rd - Sigma",
+        data: xMRiMRChartData.results.iBarNeg3Sigma,
+        pointRadius: 0,
+        borderColor: "rgba(255,0,0,1)",
+      }]
+    },
+    options: {
+      legend: {display: true},
+    },
+  });
+
+  //plot this dataset to a chart
+  const iMRChart= new Chart("IMRChart", {
+    type: "line",
+    data: {
+      labels: xMRiMRChartData.results.indexForChart,
+      datasets: [{
+        label: "Moving Range",
+        pointRadius: 5,
+        backgroundColor:"rgba(0,0,255,1)",
+        borderColor:"rgb(0,0,255,1)",
+        data: xMRiMRChartData.results.movingRange,
+        fill: false,
+      }, {
+        label: "Moving Range Bar",
+        data: xMRiMRChartData.results.movingRangeBar,
+        pointRadius: 0,
+        borderColor:"rgba(255, 255, 255, 1)",
+        borderDash: [15],
+        fill: false,
+      }, {
+        label: "Moving Range UCL",
+        data: xMRiMRChartData.results.movingRangeUCL,
+        pointRadius: 0,
+        borderColor:"rgba(255,0,0,1)",
+        fill: false,
+      }],
+    },
+    options: {
+      legend: {display: true},
+    }
+  });
+
 
 return xMRiMRChartData
 };
