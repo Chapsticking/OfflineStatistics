@@ -47,8 +47,6 @@ function analyzeData() {
   document.getElementById('sampleSizeConstantBehavior').innerHTML = "Sample Size was selected as constant: " + sampleSizeConstant.value;
   document.getElementById('testSelectedBehavior').innerHTML = "Test Utilized: " + testResults.currentTest;
 
-
-
 return testResults
 
 } //END FUNCTION
@@ -295,6 +293,9 @@ function xmr_imr_plot(data) {
     }; return uCL
   }
 
+  let rulesBroken = checkHowChartBehaves(xMRiMRChartData);
+  console.log("Rules Broken: " + rulesBroken)
+
   //plot this dataset to a chart
   const xMRChart = new Chart("controlChart", {
     type: "line",
@@ -327,32 +328,44 @@ function xmr_imr_plot(data) {
         pointRadius: 0,
         borderColor: "rgba(217,210,213,.8)",
         borderDash: [10],
+        fill: false,
       }, {
         label: "3rd + Sigma",
         data: xMRiMRChartData.results.iBarPos3Sigma,
         pointRadius: 0,
         borderColor: "rgba(255,0,0,1)",
+        fill: false,
       },{
         label: "1st - Sigma",
         data: xMRiMRChartData.results.iBarNeg1Sigma,
         pointRadius: 0,
         borderColor: "rgba(217,210,213,.5)",
         borderDash: [10],
+        fill: false,
       },{
         label: "2nd - Sigma",
         data: xMRiMRChartData.results.iBarNeg2Sigma,
         pointRadius: 0,
         borderColor: "rgba(217,210,213,.8)",
         borderDash: [10],
+        fill: false,
       },{
         label: "3rd - Sigma",
         data: xMRiMRChartData.results.iBarNeg3Sigma,
         pointRadius: 0,
         borderColor: "rgba(255,0,0,1)",
+        fill: false,
+      }, {
+        label: "Rule 1 – One point beyond the 3 σ control limit",
+        data: rulesBroken.valueOfBreak,
+        pointRadius: 10,
+        borderColor: "rgba(0,0,20,1)",
+        backgroundColor: "rgba(255,0,0,1)"
       }]
     },
     options: {
-      legend: {display: true},
+      legend: {display: true, position: 'right'},
+      title: {display: true, text: "X-MR Chart"}
     },
   });
 
@@ -385,12 +398,40 @@ function xmr_imr_plot(data) {
     },
     options: {
       legend: {display: true},
+      title: {display: true, text: "I-MR Chart"}
     }
   });
 
+  console.log(checkHowChartBehaves(xMRiMRChartData))
 
 return xMRiMRChartData
 };
+
+//-----Process Checking-----
+function checkHowChartBehaves(chartedData) {
+  let data = chartedData.results 
+  //main trend identification object
+  let trendIdentificationBank = {
+    ruleBroken: [],
+    isBroken: [],
+    indexOfRuleBreak: [],
+    valueOfBreak: [],
+  }
+  //First Rule Check (Rule 1 – One point beyond the 3 σ control limit)
+  for (i = 0; i < data.dataForChart.length; i++) {
+    if (data.dataForChart[i] > data.iBarPos3Sigma[i] || data.dataForChart[i] < data.iBarNeg3Sigma[i]) {
+      trendIdentificationBank.ruleBroken.push("Rule 1 Broken - One point beyond the 3 σ control limit");
+      trendIdentificationBank.isBroken.push(1);
+      trendIdentificationBank.indexOfRuleBreak.push(i)
+      trendIdentificationBank.valueOfBreak.push(data.dataForChart[i])
+    } else {
+      trendIdentificationBank.ruleBroken.push("Rule 1 Pass");
+      trendIdentificationBank.isBroken.push(null);
+      trendIdentificationBank.indexOfRuleBreak.push(i)
+      trendIdentificationBank.valueOfBreak.push(data.dataForChart[null])
+    }
+  }; return trendIdentificationBank
+}
 
 //-----Convert Object to CSV-----
 function convertChartDataToCSV(dataObj) {
