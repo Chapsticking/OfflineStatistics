@@ -447,6 +447,38 @@ function checkHowChartBehaves(chartedData) {
       trendIdentificationBank.valueOfBreak.push(data.dataForChart[null]);
     }
   }
+
+  //Second Rule – Eight or more points on one side of the centerline without crossing
+  for (let i = 0; i < data.dataForChart.length; i++) {
+    let currentValue = data.dataForChart[i];
+    let leftToAnalyze = data.dataForChart.length - i;
+    let countOfOverOrUnder = 0;
+
+    //Check if value is above centerline
+    if (currentValue > data.iBar[i]) {
+      for (let x = i; x < data.dataForChart.length; x++) {
+        if (data.dataForChart[x] > data.iBar[x]) {
+          countOfOverOrUnder++;
+          if (countOfOverOrUnder >= 8) {
+            console.log('Rule 2 Break (ABOVE CENTERLINE)');
+          }
+        }
+      }
+    } else if (currentValue < data.iBar) {
+      countOfOverOrUnder = 0;
+
+      //Not finding anything below centerline for soem reason
+      for (let x = i; x < data.dataForChart.length; x++) {
+        if (data.dataForChart[x] < data.iBar[x]) {
+          countOfOverOrUnder++;
+          if (countOfOverOrUnder >= 8) {
+            console.log('Rule 2 Break (BELOW CENTERLINE)');
+          }
+        }
+      }
+    }
+  }
+
   return trendIdentificationBank;
 }
 
