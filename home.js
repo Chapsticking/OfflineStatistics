@@ -368,10 +368,17 @@ function xmr_imr_plot(data) {
         },
         {
           label: 'Rule 1 – One point beyond the 3 σ control limit',
-          data: rulesBroken.valueOfBreak,
+          data: rulesBroken.rules.ruleOne.valueOfBreak,
           pointRadius: 10,
-          borderColor: 'rgba(0,0,20,1)',
           backgroundColor: 'rgba(255,0,0,1)',
+          fill: false,
+        },
+        {
+          label: 'Rule 2 - Eight or more points on one side of the centerline without crossing',
+          data: rulesBroken.rules.ruleTwo.valueOfBreak,
+          pointRadius: 10,
+          backgroundColor: 'rgba(232, 245, 39, 0.8, 1)',
+          fill: false,
         },
       ],
     },
@@ -428,57 +435,88 @@ function checkHowChartBehaves(chartedData) {
   let data = chartedData.results;
   //main trend identification object
   let trendIdentificationBank = {
-    ruleBroken: [],
-    isBroken: [],
-    indexOfRuleBreak: [],
-    valueOfBreak: [],
+    rules: {
+      ruleOne: {
+        ruleBroken: [],
+        isBroken: [],
+        indexOfRuleBreak: [],
+        valueOfBreak: [],
+      },
+      ruleTwo: {
+        ruleBroken: [],
+        isBroken: [],
+        indexOfRuleBreak: [],
+        valueOfBreak: [],
+      },
+      ruleThree: {
+        ruleBroken: [],
+        isBroken: [],
+        indexOfRuleBreak: [],
+        valueOfBreak: [],
+      },
+      ruleFour: {
+        ruleBroken: [],
+        isBroken: [],
+        indexOfRuleBreak: [],
+        valueOfBreak: [],
+      },
+      ruleFive: {
+        ruleBroken: [],
+        isBroken: [],
+        indexOfRuleBreak: [],
+        valueOfBreak: [],
+      },
+      ruleSix: {
+        ruleBroken: [],
+        isBroken: [],
+        indexOfRuleBreak: [],
+        valueOfBreak: [],
+      },
+      ruleSeven: {
+        ruleBroken: [],
+        isBroken: [],
+        indexOfRuleBreak: [],
+        valueOfBreak: [],
+      },
+    },
   };
   //First Rule Check (Rule 1 – One point beyond the 3 σ control limit)
   for (i = 0; i < data.dataForChart.length; i++) {
     if (data.dataForChart[i] > data.iBarPos3Sigma[i] || data.dataForChart[i] < data.iBarNeg3Sigma[i]) {
-      trendIdentificationBank.ruleBroken.push('Rule 1 Broken - One point beyond the 3 σ control limit');
-      trendIdentificationBank.isBroken.push(1);
-      trendIdentificationBank.indexOfRuleBreak.push(i);
-      trendIdentificationBank.valueOfBreak.push(data.dataForChart[i]);
+      trendIdentificationBank.rules.ruleOne.ruleBroken.push('Rule 1 Broken - One point beyond the 3 σ control limit');
+      trendIdentificationBank.rules.ruleOne.isBroken.push(1);
+      trendIdentificationBank.rules.ruleOne.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleOne.valueOfBreak.push(data.dataForChart[i]);
     } else {
-      trendIdentificationBank.ruleBroken.push('Rule 1 Pass');
-      trendIdentificationBank.isBroken.push(null);
-      trendIdentificationBank.indexOfRuleBreak.push(i);
-      trendIdentificationBank.valueOfBreak.push(data.dataForChart[null]);
+      trendIdentificationBank.rules.ruleOne.ruleBroken.push('Rule 1 Pass');
+      trendIdentificationBank.rules.ruleOne.isBroken.push(null);
+      trendIdentificationBank.rules.ruleOne.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleOne.valueOfBreak.push(data.dataForChart[null]);
     }
   }
 
   //Second Rule – Eight or more points on one side of the centerline without crossing
   for (let i = 0; i < data.dataForChart.length; i++) {
-    let currentValue = data.dataForChart[i];
-    let leftToAnalyze = data.dataForChart.length - i;
-    let countOfOverOrUnder = 0;
-
-    //Check if value is above centerline
-    if (currentValue > data.iBar[i]) {
-      for (let x = i; x < data.dataForChart.length; x++) {
-        if (data.dataForChart[x] > data.iBar[x]) {
-          countOfOverOrUnder++;
-          if (countOfOverOrUnder >= 8) {
-            console.log('Rule 2 Break (ABOVE CENTERLINE)');
-          }
-        }
-      }
-    } else if (currentValue < data.iBar) {
-      countOfOverOrUnder = 0;
-
-      //Not finding anything below centerline for soem reason
-      for (let x = i; x < data.dataForChart.length; x++) {
-        if (data.dataForChart[x] < data.iBar[x]) {
-          countOfOverOrUnder++;
-          if (countOfOverOrUnder >= 8) {
-            console.log('Rule 2 Break (BELOW CENTERLINE)');
-          }
-        }
-      }
+    let rangeOfEightValues = data.dataForChart.slice(i, i + 8);
+    let rangeOverTheCenterLine = rangeOfEightValues.every((el) => el > data.iBar[i]);
+    let rangeUnderTheCenterLine = rangeOfEightValues.every((el) => el < data.iBar[i]);
+    if (rangeOverTheCenterLine && rangeOfEightValues.length === 8) {
+      trendIdentificationBank.rules.ruleTwo.ruleBroken.push('Rule 2 Broken - Eight or more points above the centerline without crossing');
+      trendIdentificationBank.rules.ruleTwo.isBroken.push(1);
+      trendIdentificationBank.rules.ruleTwo.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleTwo.valueOfBreak.push(data.dataForChart[i]);
+    } else if (rangeUnderTheCenterLine && rangeOfEightValues.length === 8) {
+      trendIdentificationBank.rules.ruleTwo.ruleBroken.push('Rule 2 Broken - Eight or more points below the centerline without crossing');
+      trendIdentificationBank.rules.ruleTwo.isBroken.push(1);
+      trendIdentificationBank.rules.ruleTwo.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleTwo.valueOfBreak.push(data.dataForChart[i]);
+    } else {
+      trendIdentificationBank.rules.ruleTwo.ruleBroken.push('Rule 2 Pass');
+      trendIdentificationBank.rules.ruleTwo.isBroken.push(null);
+      trendIdentificationBank.rules.ruleTwo.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleTwo.valueOfBreak.push(data.dataForChart[null]);
     }
   }
-
   return trendIdentificationBank;
 }
 
