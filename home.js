@@ -374,7 +374,7 @@ function xmr_imr_plot(data) {
           fill: false,
         },
         {
-          label: 'Rule 2 - Eight or more points on one side of the centerline without crossing',
+          label: 'Rule 2 - Eight or more points on one side of the centerline without crossing (this is the starting point, 8 out from here)',
           data: rulesBroken.rules.ruleTwo.valueOfBreak,
           pointRadius: 10,
           backgroundColor: 'rgba(232, 245, 39, 0.8, 1)',
@@ -383,7 +383,7 @@ function xmr_imr_plot(data) {
       ],
     },
     options: {
-      legend: { display: true, position: 'right' },
+      legend: { display: true, position: 'bottom' },
       title: { display: true, text: 'X-MR Chart' },
     },
   });
@@ -420,7 +420,7 @@ function xmr_imr_plot(data) {
       ],
     },
     options: {
-      legend: { display: true },
+      legend: { display: true, position: 'bottom' },
       title: { display: true, text: 'I-MR Chart' },
     },
   });
@@ -433,6 +433,7 @@ function xmr_imr_plot(data) {
 //-----Process Checking-----
 function checkHowChartBehaves(chartedData) {
   let data = chartedData.results;
+
   //main trend identification object
   let trendIdentificationBank = {
     rules: {
@@ -496,6 +497,9 @@ function checkHowChartBehaves(chartedData) {
   }
 
   //Second Rule – Eight or more points on one side of the centerline without crossing
+  //Need to find a way to highlight all datapoints that exceeded the 8, not sure how to approach this yet...
+  //For now, its just gunna highlight the first point of data that 8+ will exceed.
+  //If someone else in the 2R community could take a stab at this that would be sick. (So far I've spent 2 hours and I'm getting annoyed lol)
   for (let i = 0; i < data.dataForChart.length; i++) {
     let rangeOfEightValues = data.dataForChart.slice(i, i + 8);
     let rangeOverTheCenterLine = rangeOfEightValues.every((el) => el > data.iBar[i]);
@@ -514,34 +518,35 @@ function checkHowChartBehaves(chartedData) {
       trendIdentificationBank.rules.ruleTwo.ruleBroken.push('Rule 2 Pass');
       trendIdentificationBank.rules.ruleTwo.isBroken.push(null);
       trendIdentificationBank.rules.ruleTwo.indexOfRuleBreak.push(i);
-      trendIdentificationBank.rules.ruleTwo.valueOfBreak.push(data.dataForChart[null]);
+      trendIdentificationBank.rules.ruleTwo.valueOfBreak.push(null);
     }
   }
+
+  //Third Rule - Four out of five points in zone B or beyond
+  //Zone B is defined as > the first Sigma and < the second sigma.
+  for (let i = 0; i < data.dataForChart.length; i++) {
+    let rangeOfFive = data.dataForChart.slice(i, i + 5);
+  }
+
   return trendIdentificationBank;
 }
 
 //-----Convert Object to CSV-----
 function convertChartDataToCSV(dataObj) {
   const results = dataObj.results;
-
-  // Get all keys to form CSV headers
   const headers = Object.keys(results);
-
-  // Find the length of any one array (they should all be the same)
   const length = results[headers[0]].length;
 
-  // Start with the header row
   let csv = headers.join(',') + '\n';
 
-  // Construct each data row
   for (let i = 0; i < length; i++) {
     const row = headers.map((key) => results[key][i]);
     csv += row.join(',') + '\n';
   }
-
   return csv;
 }
 
+//-----Dwonload CSV-----
 function downloadCSV(csvString, filename = 'chart_data.csv') {
   const blob = new Blob([csvString], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
