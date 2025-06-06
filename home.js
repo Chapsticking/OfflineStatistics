@@ -525,7 +525,33 @@ function checkHowChartBehaves(chartedData) {
   //Third Rule - Four out of five points in zone B or beyond
   //Zone B is defined as > the first Sigma and < the second sigma.
   for (let i = 0; i < data.dataForChart.length; i++) {
+    let posSigma = data.iBarPos1Sigma[i];
+    let negSigma = data.iBarNeg1Sigma[i];
     let rangeOfFive = data.dataForChart.slice(i, i + 5);
+    let fourWithinPos = rangeOfFive.filter((element) => {
+      return element >= posSigma;
+    });
+    let fourWithinNeg = rangeOfFive.filter((element) => {
+      return element <= negSigma;
+    });
+    if (fourWithinPos.length === 4) {
+      trendIdentificationBank.rules.ruleThree.ruleBroken.push('Rule 3 Broken - Four out of five points in zone B or beyond ');
+      trendIdentificationBank.rules.ruleThree.isBroken.push(1);
+      trendIdentificationBank.rules.ruleThree.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleThree.valueOfBreak.push(data.dataForChart[i]);
+      console.log('Positive Hit: ' + fourWithinPos + '\n' + 'Current Pos Value: ' + posSigma);
+    } else if (fourWithinNeg.length === 4) {
+      trendIdentificationBank.rules.ruleThree.ruleBroken.push('Rule 3 Broken - Four out of five points in zone B or beyond ');
+      trendIdentificationBank.rules.ruleThree.isBroken.push(1);
+      trendIdentificationBank.rules.ruleThree.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleThree.valueOfBreak.push(data.dataForChart[i]);
+      console.log('Negative Hit: ' + fourWithinNeg + '\n' + 'Current Neg Value: ' + negSigma);
+    } else {
+      trendIdentificationBank.rules.ruleThree.ruleBroken.push('Rule 3 Pass');
+      trendIdentificationBank.rules.ruleThree.isBroken.push(null);
+      trendIdentificationBank.rules.ruleThree.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleThree.valueOfBreak.push(null);
+    }
   }
 
   return trendIdentificationBank;
