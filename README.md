@@ -41,7 +41,14 @@ If you found this helpful, want to say thanks, or are interested in collaboratin
   Download processed data for documentation or reporting.
 
 - **Automated test type selection**  
-  The tool intelligently selects the appropriate control chart based on your data.
+  The tool intelligently selects the appropriate control chart based on your data.  
+   XMR/IMR Charts  
+   Xbar-R Chart  
+   Xbar-S Chart  
+   C Chart  
+   U Chart  
+   NP Chart  
+   P Chart
 
 - **Completely offline**  
   Works 100% in your browser with no internet connection required.
