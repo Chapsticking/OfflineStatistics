@@ -1,17 +1,17 @@
 # Control Chart Analyzer
 
-All calculations run locally on your machine. Nothing gets sent over the internet.  
-It’s built entirely in vanilla JavaScript. No LLMs were used, as you can probably tell lol.
+This tool automatically identifies out-of-control points in your processes. I built it over a few weeks during spare time with a personal challenge: **no LLMs or ChatGPT** allowed.  
+Honestly, relying on those tools felt like it would take away from the learning experience. So yeah, if you're looking at `home.js` and feel the urge to throw up, I get it. This is my full noob attempt at JavaScript.
 
-I made this as a personal project to improve my vanilla JS skills and get a better feel for how different frameworks work.
+I built this to better appreciate frameworks like React, Svelte, and TypeScript. By suffering through the raw reality of vanilla JavaScript, I’ve gained a deeper appreciation for what modern frameworks help solve.
 
-This tool was originally built for the 2R2 community after visiting a few bases where people were struggling with the basics of control charts. The goal was to make those concepts easier to understand.
+This tool was originally created for the 2R2 community after visiting several bases where people were struggling with the basics of control charts. The goal was to help make those concepts easier to grasp.
 
-If you're curious how it works, take a look at `home.js`. The only external library I used was `Chart.js` because coding a line graph from scratch sounded like a nightmare.
+If you're curious how it works, take a look at `home.js`. The only external library I used was `Chart.js`—because building a line graph from scratch sounded like a nightmare.
 
-Everything is bundled into the project and runs completely offline.
+Everything is self-contained and runs completely offline.
 
-If you found this helpful, want to say thanks, or wanna help on a future project, just hit me up on teams @:  
+If you found this helpful, want to say thanks, or are interested in collaborating on a future project, hit me up on Teams:  
 **nathaniel.pahlow@us.af.mil**
 
 ---
@@ -19,36 +19,36 @@ If you found this helpful, want to say thanks, or wanna help on a future project
 ## Resources Used to Help Create the Logic
 
 - [Rules for Properly Interpreting Control Charts](https://www.pharmaceuticalonline.com/doc/rules-for-properly-interpreting-control-charts-0001)
-- [Unlock the Power of ImR (XmR) Control Charts - SPC with Excel](https://www.youtube.com/watch?app=desktop&v=cIP4PcGlZyM)
-- [Control Chart Constants](https://www.bessegato.com.br/UFJF/resources/table_of_control_chart_constants_old.pdf)
+- [Unlock the Power of ImR (XmR) Control Charts – SPC with Excel](https://www.youtube.com/watch?app=desktop&v=cIP4PcGlZyM)
+- [Control Chart Constants Table (PDF)](https://www.bessegato.com.br/UFJF/resources/table_of_control_chart_constants_old.pdf)
 
 ---
 
 ## Features
 
 - **Automated data cleaning**  
-  If you accidentally include values that aren't supported, the tool will filter them out and provide a warning.
+  Invalid or unsupported values are filtered out and flagged with a warning.
 
 - **Automated rule violation detection and visualization**  
-  Helps you easily identify where your process may be going out of control.
+  Easily identify when and where your process goes out of control.
 
-- **Export to CSV/Excel**  
-  Quickly download your processed results for sharing or reporting.
+- **Export to CSV or Excel**  
+  Download processed data for documentation or reporting.
 
 - **Automated test type selection**  
-  The app intelligently picks the best control chart based on your input.
+  The tool intelligently selects the appropriate control chart based on your data.
 
 - **Completely offline**  
-  Everything runs in your browser. No internet? No problem.
+  Works 100% in your browser with no internet connection required.
 
-- **Tells you approximately how much time it has saved you**  
-  Curious as to how much time it would have taken you to manually check each rule? Well now it tells you!
+- **Estimates time saved**  
+  See how much time the tool saved you compared to manually checking for rule violations.
 
-- **Informs you how much time Pahlow has left in the military!**  
-  I'm sure your dying to know when you can hire me on the outside so I put in a handy dandy countdown.
+- **Countdown to Pahlow’s separation**  
+  Curious when you can hire me on the outside? There’s a countdown for that too.
 
-- **Automatically adjusts to any data size!**  
-  I've only tested it on 16,743 rows of data if you go further than that your computer may start sweating
+- **Handles large data sets**  
+  Tested with up to 16,743 rows of data. Beyond that, your computer might start sweating.
 
 ---
 
@@ -57,12 +57,13 @@ If you found this helpful, want to say thanks, or wanna help on a future project
 1. Go to the top right of this repository.
 2. Click the **Code** button.
 3. Select **Download ZIP**.
-4. Right-click the ZIP file you downloaded and extract it to a folder where you want to store the tool.
-5. Open the `home.html` file by double-clicking it.
+4. Right-click the downloaded ZIP file and extract it to a folder where you want to store the tool.
+5. Open `home.html` by double-clicking it.
 6. Paste your data directly from Excel into the webpage.
 7. Select your data’s parameters.
-8. Review your results.
+8. Review the results.
 
 ---
 
 Enjoy!
+
