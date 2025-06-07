@@ -1,5 +1,9 @@
 # Control Chart Analyzer
 
+<p align="center">
+    <img src="OfflineStatistics/static/canvas.png" alt="Example of Analyzer">
+</p>
+
 This tool automatically identifies out-of-control points in your processes. I built it over a few weeks during spare time with a personal challenge: **no LLMs or ChatGPT** allowed.
 
 Honestly, relying on those tools felt like it would take away from the learning experience. So yeah, if you're looking at `home.js` and feel the urge to throw up, I get it. This is my full noob attempt at JavaScript. Also may have been a little tipsy during the creation of some of this code so again, I apologize.
