@@ -1,7 +1,7 @@
 # Control Chart Analyzer
 
 <p align="center">
-    <img src="OfflineStatistics/static/canvas.png" alt="Example of Analyzer">
+    <img src="static/canvas.png" alt="Example of Analyzer">
 </p>
 
 This tool automatically identifies out-of-control points in your processes. I built it over a few weeks during spare time with a personal challenge: **no LLMs or ChatGPT** allowed.
