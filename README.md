@@ -16,7 +16,8 @@ If you're curious how it works, take a look at `home.js`. The only external libr
 
 Everything is self-contained and runs completely offline.
 
-If you found this helpful, want to say thanks, or are interested in collaborating on a future project, hit me up on Teams:  
+If you found this helpful, want to say thanks, or are interested in collaborating on a future project, hit me up on Teams:
+
 **nathaniel.pahlow@us.af.mil**
 
 ---
@@ -57,7 +58,7 @@ If you found this helpful, want to say thanks, or are interested in collaboratin
 - **Estimates time saved**  
   See how much time the tool saved you compared to manually checking for rule violations.
 
-- **Countdown to Pahlow’s separation**  
+- **Countdown to Pahlow’s Retirment**  
   Curious when you can hire me on the outside? There’s a countdown for that too.
 
 - **Handles large data sets**  
