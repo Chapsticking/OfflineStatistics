@@ -22,14 +22,36 @@ If you found this helpful and want to say thanks, just send me an email on the g
 
 ---
 
-## Setup: Prettier Formatting
+## Features
 
-Initialize Prettier with:
+- **Automated data cleaning**  
+  If you accidentally include values that aren't supported, the tool will filter them out and provide a warning.
 
-```bash
-npx prettier-init
-{
-  "printWidth": 160,
-  "singleQuote": true
-}
-```
+- **Automated rule violation detection and visualization**  
+  Helps you easily identify where your process may be going out of control.
+
+- **Export to CSV/Excel**  
+  Quickly download your processed results for sharing or reporting.
+
+- **Automated test type selection**  
+  The app intelligently picks the best control chart based on your input.
+
+- **Completely offline**  
+  Everything runs in your browser. No internet? No problem.
+
+---
+
+## Setup Instructions
+
+1. Go to the top right of this repository.
+2. Click the **Code** button.
+3. Select **Download ZIP**.
+4. Right-click the ZIP file you downloaded and extract it to a folder where you want to store the tool.
+5. Open the `home.html` file by double-clicking it.
+6. Paste your data directly from Excel into the webpage.
+7. Select your data’s parameters.
+8. Review your results.
+
+---
+
+Enjoy!
