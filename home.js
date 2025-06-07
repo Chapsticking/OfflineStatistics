@@ -405,6 +405,13 @@ function xmr_imr_plot(data) {
           backgroundColor: 'rgba(0, 255, 100,1)',
           fill: false,
         },
+        {
+          label: 'Rule 5 – Two out of three points in zone A',
+          data: rulesBroken.rules.ruleFive.valueOfBreak,
+          pointRadius: 10,
+          backgroundColor: 'rgba(0, 0, 100,1)',
+          fill: false,
+        },
       ],
     },
     options: {
@@ -612,6 +619,44 @@ function checkHowChartBehaves(chartedData) {
       trendIdentificationBank.rules.ruleFour.isBroken.push(null);
       trendIdentificationBank.rules.ruleFour.indexOfRuleBreak.push(i);
       trendIdentificationBank.rules.ruleFour.valueOfBreak.push(null);
+    }
+  }
+
+  //Fifth Rule - Rule 5 – Two out of three points in zone A (not exceeding the third sigma)
+  for (let i = 0; i < data.dataForChart.length; i++) {
+    let posSigma = data.iBarPos2Sigma[i];
+    let posSigmaCeiling = data.iBarPos3Sigma[i];
+    let negSigma = data.iBarNeg2Sigma[i];
+    let negSigmaCeiling = data.iBarNeg3Sigma[i];
+    let rangeOfThree = data.dataForChart.slice(i, i + 3);
+
+    //God help me
+    let twoWithinPos = rangeOfThree.filter((element) => {
+      return element >= posSigma && element <= posSigmaCeiling;
+    });
+    let twoWithinNeg = rangeOfThree.filter((element) => {
+      return element <= negSigma && element <= negSigmaCeiling;
+    });
+
+    console.log('two in positive area: ' + twoWithinPos);
+    console.log('two in negative area: ' + twoWithinNeg);
+    console.log('current index: ' + i);
+
+    if (twoWithinPos.length === 2) {
+      trendIdentificationBank.rules.ruleFive.ruleBroken.push('Rule 5 Broken - Two out of three points in zone A');
+      trendIdentificationBank.rules.ruleFive.isBroken.push(1);
+      trendIdentificationBank.rules.ruleFive.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleFive.valueOfBreak.push(data.dataForChart[i]);
+    } else if (twoWithinNeg.length === 2) {
+      trendIdentificationBank.rules.ruleFive.ruleBroken.push('Rule 5 Broken - Two out of three points in zone A');
+      trendIdentificationBank.rules.ruleFive.isBroken.push(1);
+      trendIdentificationBank.rules.ruleFive.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleFive.valueOfBreak.push(data.dataForChart[i]);
+    } else {
+      trendIdentificationBank.rules.ruleFive.ruleBroken.push('Rule 5 Pass');
+      trendIdentificationBank.rules.ruleFive.isBroken.push(null);
+      trendIdentificationBank.rules.ruleFive.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleFive.valueOfBreak.push(null);
     }
   }
   return trendIdentificationBank;
