@@ -1,7 +1,8 @@
 # Control Chart Analyzer
 
-This tool automatically identifies out-of-control points in your processes. I built it over a few weeks during spare time with a personal challenge: **no LLMs or ChatGPT** allowed.  
-Honestly, relying on those tools felt like it would take away from the learning experience. So yeah, if you're looking at `home.js` and feel the urge to throw up, I get it. This is my full noob attempt at JavaScript.
+This tool automatically identifies out-of-control points in your processes. I built it over a few weeks during spare time with a personal challenge: **no LLMs or ChatGPT** allowed.
+
+Honestly, relying on those tools felt like it would take away from the learning experience. So yeah, if you're looking at `home.js` and feel the urge to throw up, I get it. This is my full noob attempt at JavaScript. Also may have been a little tipsy during the creation of some of this code so again, I apologize.
 
 I built this to better appreciate frameworks like React, Svelte, and TypeScript. By suffering through the raw reality of vanilla JavaScript, I’ve gained a deeper appreciation for what modern frameworks help solve.
 
@@ -66,4 +67,3 @@ If you found this helpful, want to say thanks, or are interested in collaboratin
 ---
 
 Enjoy!
-
