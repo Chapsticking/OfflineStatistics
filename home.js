@@ -398,6 +398,13 @@ function xmr_imr_plot(data) {
           backgroundColor: 'rgba(255, 153, 153,1)',
           fill: false,
         },
+        {
+          label: 'Rule 4 - Six points or more in a row steadily increasing or decreasing',
+          data: rulesBroken.rules.ruleFour.valueOfBreak,
+          pointRadius: 10,
+          backgroundColor: 'rgba(0, 255, 100,1)',
+          fill: false,
+        },
       ],
     },
     options: {
@@ -553,32 +560,16 @@ function checkHowChartBehaves(chartedData) {
       return element <= negSigma;
     });
 
-    console.log(
-      'range of five: ' +
-        rangeOfFive +
-        '\n' +
-        'positives to: ' +
-        fourWithinPos +
-        '\n' +
-        'negatives to: ' +
-        fourWithinNeg +
-        '\n' +
-        'Current Value being Analayzed: ' +
-        data.dataForChart[i],
-    );
-
     if (fourWithinPos.length === 4) {
       trendIdentificationBank.rules.ruleThree.ruleBroken.push('Rule 3 Broken - Four out of five points in zone B or beyond ');
       trendIdentificationBank.rules.ruleThree.isBroken.push(1);
       trendIdentificationBank.rules.ruleThree.indexOfRuleBreak.push(i);
       trendIdentificationBank.rules.ruleThree.valueOfBreak.push(data.dataForChart[i]);
-      console.log('Positive Hit: ' + fourWithinPos + '\n' + 'Current Pos Value: ' + posSigma + '\n' + 'Current Index: ' + i);
     } else if (fourWithinNeg.length === 4) {
       trendIdentificationBank.rules.ruleThree.ruleBroken.push('Rule 3 Broken - Four out of five points in zone B or beyond ');
       trendIdentificationBank.rules.ruleThree.isBroken.push(1);
       trendIdentificationBank.rules.ruleThree.indexOfRuleBreak.push(i);
       trendIdentificationBank.rules.ruleThree.valueOfBreak.push(data.dataForChart[i]);
-      console.log('Negative Hit: ' + fourWithinNeg + '\n' + 'Current Neg Value: ' + negSigma + '\n' + 'Current Index: ' + i);
     } else {
       trendIdentificationBank.rules.ruleThree.ruleBroken.push('Rule 3 Pass');
       trendIdentificationBank.rules.ruleThree.isBroken.push(null);
@@ -587,6 +578,42 @@ function checkHowChartBehaves(chartedData) {
     }
   }
 
+  //Fourth Rule - Rule 4 – Six points or more in a row steadily increasing or decreasing
+  let rollingCountOfDataMovingUp = 0;
+  let rollingCountOfDataMovingDown = 0;
+  let ruleFourBrokenUp = false;
+  let ruleFourBrokenDown = false;
+  for (let i = 0; i < data.dataForChart.length; i++) {
+    if (data.dataForChart[i] < data.dataForChart[i + 1]) {
+      rollingCountOfDataMovingUp++;
+      if (rollingCountOfDataMovingUp === 6) {
+        ruleFourBrokenUp = true;
+      }
+    } else {
+      rollingCountOfDataMovingUp = 0;
+      ruleFourBrokenUp = false;
+    }
+    if (data.dataForChart[i] > data.dataForChart[i + 1]) {
+      rollingCountOfDataMovingDown++;
+      if (rollingCountOfDataMovingDown === 6) {
+        ruleFourBrokenDown = true;
+      }
+    } else {
+      rollingCountOfDataMovingDown = 0;
+      ruleFourBrokenDown = false;
+    }
+    if (ruleFourBrokenUp || ruleFourBrokenDown) {
+      trendIdentificationBank.rules.ruleFour.ruleBroken.push('Rule 4 Broken - Six points or more in a row steadily increasing or decreasing');
+      trendIdentificationBank.rules.ruleFour.isBroken.push(1);
+      trendIdentificationBank.rules.ruleFour.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleFour.valueOfBreak.push(data.dataForChart[i]);
+    } else {
+      trendIdentificationBank.rules.ruleFour.ruleBroken.push('Rule 4 Pass');
+      trendIdentificationBank.rules.ruleFour.isBroken.push(null);
+      trendIdentificationBank.rules.ruleFour.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleFour.valueOfBreak.push(null);
+    }
+  }
   return trendIdentificationBank;
 }
 
