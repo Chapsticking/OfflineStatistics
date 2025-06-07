@@ -1,4 +1,4 @@
-#Control Chart Analyzer
+# Control Chart Analyzer
 
 All calculations run locally on your machine. Nothing gets sent over the internet.
 It’s built entirely in vanilla JavaScript. No LLMs were used, as you can probably tell lol.
@@ -14,10 +14,12 @@ Everything is bundled into the project and runs completely offline.
 If you found this helpful and want to say thanks, just send me an email on the global.
 nathaniel.pahlow@us.af.mil
 
-#Resources used to help create the logic:
+# Resources used to help create the logic:
+
 https://www.pharmaceuticalonline.com/doc/rules-for-properly-interpreting-control-charts-0001
 
-#Setup prettier format
+# Setup prettier format
+
 npx prettier-init
 
 #my current setup for formatting.
