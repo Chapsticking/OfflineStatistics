@@ -19,6 +19,8 @@ If you found this helpful and want to say thanks, just send me an email on the g
 ## Resources Used to Help Create the Logic
 
 - [Rules for Properly Interpreting Control Charts](https://www.pharmaceuticalonline.com/doc/rules-for-properly-interpreting-control-charts-0001)
+- [Unlock the Power of ImR (XmR) Control Charts - SPC with Excel](https://www.youtube.com/watch?app=desktop&v=cIP4PcGlZyM)
+- [Control Chart Constants](https://www.bessegato.com.br/UFJF/resources/table_of_control_chart_constants_old.pdf)
 
 ---
 

@@ -638,10 +638,6 @@ function checkHowChartBehaves(chartedData) {
       return element <= negSigma && element <= negSigmaCeiling;
     });
 
-    console.log('two in positive area: ' + twoWithinPos);
-    console.log('two in negative area: ' + twoWithinNeg);
-    console.log('current index: ' + i);
-
     if (twoWithinPos.length === 2) {
       trendIdentificationBank.rules.ruleFive.ruleBroken.push('Rule 5 Broken - Two out of three points in zone A');
       trendIdentificationBank.rules.ruleFive.isBroken.push(1);
