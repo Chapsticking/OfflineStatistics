@@ -39,13 +39,13 @@ If you found this helpful and want to say thanks, just send me an email on the g
 - **Completely offline**  
   Everything runs in your browser. No internet? No problem.
 
-- Tells you approximately how much time it has saved you
+- **Tells you approximately how much time it has saved you**
   Curious as to how much time it would have taken you to manually check each rule? Well now it tells you!
 
-- Informs you how much time Pahlow has left in the military!
+- **Informs you how much time Pahlow has left in the military!**
   I'm sure your dying to know when you can hire me on the outside so I put in a handy dandy countdown.
 
-- Automatically adjusts to any data size!
+- **Automatically adjusts to any data size!**
   I've only tested it on 5,000 rows of data if you go further than that your computer may have a seizure lol
 
 ---
