@@ -11,7 +11,7 @@ If you're curious how it works, take a look at `home.js`. The only external libr
 
 Everything is bundled into the project and runs completely offline.
 
-If you found this helpful and want to say thanks, just send me an email on the global:  
+If you found this helpful, want to say thanks, or wanna help on a future project, just hit me up on teams @:  
 **nathaniel.pahlow@us.af.mil**
 
 ---
@@ -48,7 +48,7 @@ If you found this helpful and want to say thanks, just send me an email on the g
   I'm sure your dying to know when you can hire me on the outside so I put in a handy dandy countdown.
 
 - **Automatically adjusts to any data size!**  
-  I've only tested it on 5,000 rows of data if you go further than that your computer may have a seizure lol
+  I've only tested it on 16,743 rows of data if you go further than that your computer may start sweating
 
 ---
 
