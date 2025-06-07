@@ -171,6 +171,17 @@ function showOptionsOnDiscreetSelection(discreetSelected) {
 
 //-----Determine Which Test To Use (god damn this looks like shit)-----
 function goToTest(subGroupSize, dataType, defectType, constantSampleType, cleanedData) {
+  let overallDataCharacteristics = {
+    index: [],
+    centerLine: [],
+    sigmaOnePos: [],
+    sigmaTwoPos: [],
+    sigmaThreePos: [],
+    sigmaOneNeg: [],
+    sigmaTwoNeg: [],
+    sigmaThreeNeg: [],
+  };
+
   let testType = '';
   if (dataType === 'Continuous') {
     if (subGroupSize === '1') {
@@ -374,10 +385,17 @@ function xmr_imr_plot(data) {
           fill: false,
         },
         {
-          label: 'Rule 2 - Eight or more points on one side of the centerline without crossing (this is the starting point, 8 out from here)',
+          label: 'Rule 2 - Eight or more points on one side of the centerline without crossing.',
           data: rulesBroken.rules.ruleTwo.valueOfBreak,
           pointRadius: 10,
-          backgroundColor: 'rgba(232, 245, 39, 0.8, 1)',
+          backgroundColor: 'rgba(255, 255, 102, 1)',
+          fill: false,
+        },
+        {
+          label: 'Rule 3 - Four out of five points in zone B or beyond',
+          data: rulesBroken.rules.ruleThree.valueOfBreak,
+          pointRadius: 10,
+          backgroundColor: 'rgba(255, 153, 153,1)',
           fill: false,
         },
       ],
@@ -534,18 +552,33 @@ function checkHowChartBehaves(chartedData) {
     let fourWithinNeg = rangeOfFive.filter((element) => {
       return element <= negSigma;
     });
+
+    console.log(
+      'range of five: ' +
+        rangeOfFive +
+        '\n' +
+        'positives to: ' +
+        fourWithinPos +
+        '\n' +
+        'negatives to: ' +
+        fourWithinNeg +
+        '\n' +
+        'Current Value being Analayzed: ' +
+        data.dataForChart[i],
+    );
+
     if (fourWithinPos.length === 4) {
       trendIdentificationBank.rules.ruleThree.ruleBroken.push('Rule 3 Broken - Four out of five points in zone B or beyond ');
       trendIdentificationBank.rules.ruleThree.isBroken.push(1);
       trendIdentificationBank.rules.ruleThree.indexOfRuleBreak.push(i);
       trendIdentificationBank.rules.ruleThree.valueOfBreak.push(data.dataForChart[i]);
-      console.log('Positive Hit: ' + fourWithinPos + '\n' + 'Current Pos Value: ' + posSigma);
+      console.log('Positive Hit: ' + fourWithinPos + '\n' + 'Current Pos Value: ' + posSigma + '\n' + 'Current Index: ' + i);
     } else if (fourWithinNeg.length === 4) {
       trendIdentificationBank.rules.ruleThree.ruleBroken.push('Rule 3 Broken - Four out of five points in zone B or beyond ');
       trendIdentificationBank.rules.ruleThree.isBroken.push(1);
       trendIdentificationBank.rules.ruleThree.indexOfRuleBreak.push(i);
       trendIdentificationBank.rules.ruleThree.valueOfBreak.push(data.dataForChart[i]);
-      console.log('Negative Hit: ' + fourWithinNeg + '\n' + 'Current Neg Value: ' + negSigma);
+      console.log('Negative Hit: ' + fourWithinNeg + '\n' + 'Current Neg Value: ' + negSigma + '\n' + 'Current Index: ' + i);
     } else {
       trendIdentificationBank.rules.ruleThree.ruleBroken.push('Rule 3 Pass');
       trendIdentificationBank.rules.ruleThree.isBroken.push(null);
