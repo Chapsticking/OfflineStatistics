@@ -412,6 +412,13 @@ function xmr_imr_plot(data) {
           backgroundColor: 'rgba(0, 0, 100,1)',
           fill: false,
         },
+        {
+          label: 'Rule 6 – 14 points in a row alternating up and down',
+          data: rulesBroken.rules.ruleSix.valueOfBreak,
+          pointRadius: 10,
+          backgroundColor: 'rgba(0, 0, 100,1)',
+          fill: false,
+        },
       ],
     },
     options: {
@@ -655,6 +662,55 @@ function checkHowChartBehaves(chartedData) {
       trendIdentificationBank.rules.ruleFive.valueOfBreak.push(null);
     }
   }
+
+  for (let i = 0; i < data.dataForChart.length; i++) {
+    let sliceOf14 = data.dataForChart.slice(i, i + 14);
+    console.log(sliceOf14);
+    if (sliceOf14.length === 14) {
+      console.log(checkRule6(sliceOf14));
+      if (checkRule6(sliceOf14)) {
+        trendIdentificationBank.rules.ruleSix.ruleBroken.push('Rule 6 – 14 points in a row alternating up and down');
+        trendIdentificationBank.rules.ruleSix.isBroken.push(1);
+        trendIdentificationBank.rules.ruleSix.indexOfRuleBreak.push(i);
+        trendIdentificationBank.rules.ruleSix.valueOfBreak.push(data.dataForChart[i]);
+      } else {
+        trendIdentificationBank.rules.ruleSix.ruleBroken.push('Rule 6 Pass');
+        trendIdentificationBank.rules.ruleSix.isBroken.push(null);
+        trendIdentificationBank.rules.ruleSix.indexOfRuleBreak.push(i);
+        trendIdentificationBank.rules.ruleSix.valueOfBreak.push(null);
+      }
+    } else {
+      console.log('made it here');
+      trendIdentificationBank.rules.ruleSix.ruleBroken.push('Rule 6 Pass');
+      trendIdentificationBank.rules.ruleSix.isBroken.push(null);
+      trendIdentificationBank.rules.ruleSix.indexOfRuleBreak.push(i);
+      trendIdentificationBank.rules.ruleSix.valueOfBreak.push(null);
+    }
+  }
+
+  function checkRule6(dataArray) {
+    if (dataArray.length < 14) return false; // Need at least 15 points to get 14 direction changes
+
+    let directions = [];
+
+    for (let i = 1; i < dataArray.length; i++) {
+      let direction = dataArray[i] > dataArray[i - 1] ? 'up' : dataArray[i] < dataArray[i - 1] ? 'down' : 'flat';
+
+      if (direction === 'flat') return false; // Rule breaks on equal points
+
+      directions.push(direction);
+    }
+
+    // Now check if we have 14 alternating directions
+    for (let i = 1; i < 14; i++) {
+      if (directions[i] === directions[i - 1]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   return trendIdentificationBank;
 }
 
