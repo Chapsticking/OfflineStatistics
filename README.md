@@ -27,6 +27,9 @@ If you found this helpful, want to say thanks, or are interested in collaboratin
 - [Rules for Properly Interpreting Control Charts](https://www.pharmaceuticalonline.com/doc/rules-for-properly-interpreting-control-charts-0001)
 - [Unlock the Power of ImR (XmR) Control Charts – SPC with Excel](https://www.youtube.com/watch?app=desktop&v=cIP4PcGlZyM)
 - [Control Chart Constants Table (PDF)](https://www.bessegato.com.br/UFJF/resources/table_of_control_chart_constants_old.pdf)
+- [Control Charts simply explained - Statistical process control - Xbar-R Chart, I-MR Chart,...](https://www.youtube.com/watch?v=iOJDBpOa3Ko)
+- [Minitab Documentation on Control Charts](https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/)
+- [The Book of Statistical Process Control - Second Addition](https://zontec-spc.com/wp-content/uploads/2022/04/The-Book-of-SPC-Complimentary-eBook.pdf)
 
 ---
 
