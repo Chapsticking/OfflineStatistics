@@ -47,6 +47,9 @@ function analyzeData() {
   document.getElementById('sampleSizeConstantBehavior').innerHTML = 'Sample Size was selected as constant: ' + sampleSizeConstant.value;
   document.getElementById('testSelectedBehavior').innerHTML = 'Test Utilized: ' + testResults.currentTest;
 
+  //Unhide the data results section of the page.
+  document.getElementById('ResultSection').style.display = 'block';
+
   return testResults;
 } //END FUNCTION
 
@@ -132,7 +135,7 @@ function getIndexOfArray(cleanedData) {
   return indexOfDataSet;
 }
 
-//Yoinked this from stack overflow
+//Yoinked this from stack overflow NOT LLM so I didn't cheat lmao
 function isNumeric(str) {
   if (typeof str != 'string') return false; // we only process strings!
   return (
