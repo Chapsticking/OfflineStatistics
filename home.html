@@ -9,31 +9,30 @@
 
   <body>
     <p>Control Chart Flow</p>
-    <img src="./static/How-to-Select-a-Control-Chart-600x325.jpg" />
-    <a>What rules will this program identify for you?</a>
-    <ul>
-      <li>Rule 1 – One point beyond the 3 σ control limit:</li>
-      <li>Rule 2 – Eight or more points on one side of the centerline without crossing:</li>
-      <li>Rule 3 – Four out of five points in zone B or beyond</li>
-      <li>Rule 4 – Six points or more in a row steadily increasing or decreasing</li>
-      <li>Rule 5 – Two out of three points in zone A</li>
-      <li>Rule 6 – 14 points in a row alternating up and down</li>
-    </ul>
 
-    <a>What rules will this program NOT identify for you?</a>
-    <ul>
-      <li>Rule 7 – Any noticeable/predictable pattern, cycle, or trend</li>
-    </ul>
+    <div class="flex-container">
+      <img src="./static/How-to-Select-a-Control-Chart-600x325.jpg" />
 
-    <a>How to tell if your data is Discreet or Continous data?</a>
-    <p>
-      To determine if data is discrete or continuous, consider whether the data values are countable (discrete) or measurable and can take on any value within a
-      range (continuous). Discrete data usually represents counts or categories, while continuous data can vary continuously
-    </p>
+      <div calss="rules-section">
+        <a>What rules will this program identify for you?</a>
+        <ul>
+          <li>Rule 1 – One point beyond the 3 σ control limit:</li>
+          <li>Rule 2 – Eight or more points on one side of the centerline without crossing</li>
+          <li>Rule 3 – Four out of five points in zone B or beyond</li>
+          <li>Rule 4 – Six points or more in a row steadily increasing or decreasing</li>
+          <li>Rule 5 – Two out of three points in zone A</li>
+          <li>Rule 6 – 14 points in a row alternating up and down</li>
+        </ul>
+        <a>What rules will this program NOT identify for you?</a>
+        <ul>
+          <li>Rule 7 – Any noticeable/predictable pattern, cycle, or trend</li>
+        </ul>
+      </div>
+    </div>
 
     <form id="controlChartData" action="" onsubmit="return false">
       <label for="exportData">Would you like to export the results to a CSV?</label>
-      <select id="exportData">
+      <select id="exportData" title="Save the results once the you submit into a excel friendly CSV file.">
         <option value="No">No</option>
         <option value="Yes">Yes</option>
       </select>
@@ -42,13 +41,21 @@
       <textarea id="rawData" rows="6" placeholder="Paste your data here..." required></textarea>
 
       <label for="populationOrSample">Population or Sample of Data?</label>
-      <select id="populationOrSample">
+      <select
+        id="populationOrSample"
+        title="Is this the complete dataset? If yes, select 'Population.' If it's only a portion of the full dataset, select 'Sample.'"
+      >
         <option value="Sample">Sample</option>
         <option value="Population">Population</option>
       </select>
 
       <label for="dataType">Please Select the Data Type:</label>
-      <select id="dataType" name="dataType" onchange="showOptionsOnDiscreetSelection(this)">
+      <select
+        id="dataType"
+        name="dataType"
+        onchange="showOptionsOnDiscreetSelection(this)"
+        title="To determine if data is discrete or continuous, consider whether the values are countable or measurable. Discrete data includes countable values such as the number of maintenance actions completed. Continuous data can take on any value within a range and includes measurements like engine oil temperature, fuel level, or elapsed flight time. While time may be recorded in intervals, it is inherently continuous because it can be measured with infinite precision."
+      >
         <option value="Continuous">Continuous</option>
         <option value="Discreet">Discreet</option>
       </select>
